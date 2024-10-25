@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name: Debug Bar Console Reloaded
- * Plugin URI: http://wordpress.org/extend/plugins/debug-bar-console-reloaded/
- * Description: Adds a PHP/SQL console to the debug bar. Requires the debug bar plugin.
+ * Plugin Name: Debug Bar Console
+ * Plugin URI: http://wordpress.org/extend/plugins/debug-bar-console/
+ * Description: Adds a PHP/SQL console panel to the Debug Bar plugin. Requires the Debug Bar plugin.
  * Author: Drew Jaynes
  * Author URI: https://werdswords.com
  * Version: 1.0.0
  * License: GPLv2
  * Requires PHP: 7.4
- * Text Domain: debug-bar-console-reloaded
+ * Text Domain: debug-bar-console
  * Domain Path: /languages/
  */
 
@@ -18,14 +18,14 @@
  * http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-use WW\DebugBarConsoleReloaded\Integration;
+use WW\DebugBarConsole\Integration;
 
 /**
  * Main plugin class.
  *
  * @since 1.0.0
  */
-class DebugBarConsoleReloaded
+class DebugBarConsole
 {
 	const VERSION = '1.0.0';
 	const FILE = __FILE__;
@@ -45,4 +45,4 @@ class DebugBarConsoleReloaded
 	}
 }
 
-add_action('init', fn() => (new DebugBarConsoleReloaded())->init());
+add_action('init', fn() => (new DebugBarConsole())->init());
