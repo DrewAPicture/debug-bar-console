@@ -25,7 +25,6 @@ namespace {
 
 namespace WW\DebugBarConsole {
 
-	use DebugBarConsole;
 	use Debug_Bar_Console_Panel;
 	use WW\DebugBarConsole\Helpers\AssetsHelper;
 
@@ -72,18 +71,18 @@ namespace WW\DebugBarConsole {
 		 */
 		public function enqueueScripts()
 		{
-			$basePath = "src/assets/codemirror";
+			$cmBasePath = "src/assets/codemirror";
 
 			// Codemirror
 			wp_enqueue_style(
 				'debug-bar-console-cm',
-				AssetsHelper::getStyleUrl("{$basePath}/lib/codemirror.css", false),
+				AssetsHelper::getAssetUrl("{$cmBasePath}/lib/codemirror.css", false),
 				[],
 				'2.22'
 			);
 			wp_enqueue_script(
 				'debug-bar-console-cm',
-				AssetsHelper::getScriptUrl("{$basePath}/debug-bar-codemirror.js", false),
+				AssetsHelper::getAssetUrl("{$cmBasePath}/debug-bar-codemirror.js", false),
 				[],
 				'2.22',
 				['in_footer' => false]
@@ -91,13 +90,13 @@ namespace WW\DebugBarConsole {
 
 			wp_enqueue_style(
 				'debug-bar-console',
-				AssetsHelper::getStyleUrl('assets/css/debug-bar-console.css'),
+				AssetsHelper::getAssetUrl('assets/css/debug-bar-console.min.css'),
 				['debug-bar', 'debug-bar-console-cm'],
 				\DebugBarConsole::VERSION
 			);
 			wp_enqueue_script(
 				'debug-bar-console',
-				AssetsHelper::getScriptUrl('assets/js/debug-bar-console.js'),
+				AssetsHelper::getAssetUrl('assets/js/debug-bar-console.min.js'),
 				['debug-bar', 'debug-bar-console-cm'],
 				\DebugBarConsole::VERSION,
 				['in_footer' => false]
