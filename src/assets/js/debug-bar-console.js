@@ -23,6 +23,7 @@ run = function() {
 	$.post( ajaxurl, {
 		action: 'debug_bar_console',
 		mode:   mode.mode,
+		tab: output.mode,
 		data:   input.val(),
 		nonce:  nonce
 	}, output.render );
@@ -41,12 +42,23 @@ output = {
 			data = output.data;
 
 		if ( output.mode === 'formatted' ) {
-			iframe.body.text( data );
-			html = iframe.body.html();
-			html = html.replace( / /g, '&nbsp;' ).replace(/[\r\n]+/g, '<br />');
-			iframe.body.html( html );
+			if (mode.mode === 'sql') {
+				iframe.body.html( data );
+			} else {
+				iframe.body.text( data );
+				html = iframe.body.html();
+				html = html.replace( / /g, '&nbsp;' ).replace(/[\r\n]+/g, '<br />');
+				iframe.body.html( html );
+			}
 		} else {
-			iframe.body.html( data );
+			if (mode.mode === 'sql') {
+				iframe.body.text( data );
+				html = iframe.body.html();
+				html = html.replace( / /g, '&nbsp;' ).replace(/[\r\n]+/g, '<br />');
+				iframe.body.html( html );
+			} else {
+				iframe.body.html( data );
+			}
 		}
 	},
 	refresh: function() {
@@ -114,6 +126,15 @@ mode =  {
 	}
 };
 
+switchTab = function(t) {
+	output.mode = t.data('outputMode');
+	run();
+
+	// Update tabs
+	t.siblings().removeClass('debug-bar-console-tab-active');
+	t.addClass('debug-bar-console-tab-active');
+};
+
 $(document).ready( function(){
 	// Generate elements
 	$.extend( el, {
@@ -164,16 +185,8 @@ $(document).ready( function(){
 	});
 
 	// Output tab switching
-	$( '.debug-bar-console-tab', el.output ).click( function() {
-		var t = $(this);
-
-		output.mode = t.data('outputMode');
-		output.refresh();
-
-		// Update tabs
-		t.siblings().removeClass('debug-bar-console-tab-active');
-		t.addClass('debug-bar-console-tab-active');
-
+	$( '.debug-bar-console-tab', el.output ).click(function() {
+		switchTab($(this));
 	});
 });
 
