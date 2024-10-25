@@ -1,6 +1,6 @@
 {
-    "name": "drewapicture/debug-bar-console-reloaded",
-    "description": "Adds a PHP/MySQL console panel to Debug Bar.",
+    "name": "drewapicture/debug-bar-console",
+    "description": "Adds a PHP/SQL console panel to Debug Bar.",
     "type": "wordpress-plugin",
     "license": "GPLv2",
     "authors": [
@@ -11,7 +11,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "WW\\DebugBarConsoleReloaded\\": "src/"
+            "WW\\DebugBarConsole\\": "src/"
         }
     },
     "require": {

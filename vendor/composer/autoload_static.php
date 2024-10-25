@@ -9,12 +9,12 @@ class ComposerStaticInite55f8904505fa92165955bdfcc154f3d
     public static $prefixLengthsPsr4 = array (
         'W' => 
         array (
-            'WW\\DebugBarConsoleReloaded\\' => 27,
+            'WW\\DebugBarConsole\\' => 19,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'WW\\DebugBarConsoleReloaded\\' => 
+        'WW\\DebugBarConsole\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
