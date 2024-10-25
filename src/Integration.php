@@ -4,7 +4,7 @@
  *
  * @since 1.0.0
  *
- * @package DebugBarConsoleReloaded
+ * @package DebugBarConsole
  *
  * @copyright Copyright (c) 2024, Drew Jaynes
  * @copyright Copyright (c) 2011-2024, Daryl Koopersmith
@@ -12,7 +12,7 @@
  */
 namespace {
 
-	use WW\DebugBarConsoleReloaded\Panel;
+	use WW\DebugBarConsole\Panel;
 
 	/**
 	 * Globally-namespaced panel class to avoid Debug Bar's incompatibility with
@@ -20,14 +20,14 @@ namespace {
 	 *
 	 * @since 1.0.0
 	 */
-	final class Debug_Bar_Console_Reloaded_Panel extends Panel{}
+	final class Debug_Bar_Console_Panel extends Panel{}
 }
 
-namespace WW\DebugBarConsoleReloaded {
+namespace WW\DebugBarConsole {
 
-	use DebugBarConsoleReloaded;
-	use Debug_Bar_Console_Reloaded_Panel;
-	use WW\DebugBarConsoleReloaded\Helpers\AssetsHelper;
+	use DebugBarConsole;
+	use Debug_Bar_Console_Panel;
+	use WW\DebugBarConsole\Helpers\AssetsHelper;
 
 	/**
 	 * Sets up the integration with Debug Bar.
@@ -58,7 +58,7 @@ namespace WW\DebugBarConsoleReloaded {
 		 */
 		public function registerPanel($panels)
 		{
-			$panels[] = new Debug_Bar_Console_Reloaded_Panel;
+			$panels[] = new Debug_Bar_Console_Panel;
 
 			return $panels;
 		}
@@ -76,13 +76,13 @@ namespace WW\DebugBarConsoleReloaded {
 
 			// Codemirror
 			wp_enqueue_style(
-				'debug-bar-console-reloaded-cm',
+				'debug-bar-console-cm',
 				AssetsHelper::getStyleUrl("{$basePath}/lib/codemirror.css", false),
 				[],
 				'2.22'
 			);
 			wp_enqueue_script(
-				'debug-bar-console-reloaded-cm',
+				'debug-bar-console-cm',
 				AssetsHelper::getScriptUrl("{$basePath}/debug-bar-codemirror.js", false),
 				[],
 				'2.22',
@@ -90,16 +90,16 @@ namespace WW\DebugBarConsoleReloaded {
 			);
 
 			wp_enqueue_style(
-				'debug-bar-console-reloaded',
-				AssetsHelper::getStyleUrl('assets/css/debug-bar-console-reloaded.css'),
-				['debug-bar', 'debug-bar-console-reloaded-cm'],
-				\DebugBarConsoleReloaded::VERSION
+				'debug-bar-console',
+				AssetsHelper::getStyleUrl('assets/css/debug-bar-console.css'),
+				['debug-bar', 'debug-bar-console-cm'],
+				\DebugBarConsole::VERSION
 			);
 			wp_enqueue_script(
-				'debug-bar-console-reloaded',
-				AssetsHelper::getScriptUrl('assets/js/debug-bar-console-reloaded.js'),
-				['debug-bar', 'debug-bar-console-reloaded-cm'],
-				\DebugBarConsoleReloaded::VERSION,
+				'debug-bar-console',
+				AssetsHelper::getScriptUrl('assets/js/debug-bar-console.js'),
+				['debug-bar', 'debug-bar-console-cm'],
+				\DebugBarConsole::VERSION,
 				['in_footer' => false]
 			);
 		}

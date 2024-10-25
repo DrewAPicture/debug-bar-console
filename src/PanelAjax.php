@@ -4,14 +4,14 @@
  *
  * @since 1.0.0
  *
- * @package DebugBarConsoleReloaded
+ * @package DebugBarConsole
  *
  * @copyright Copyright (c) 2024, Drew Jaynes
  * @copyright Copyright (c) 2011-2024, Daryl Koopersmith
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-namespace WW\DebugBarConsoleReloaded;
+namespace WW\DebugBarConsole;
 
 /**
  * Panel ajax class.
@@ -43,7 +43,7 @@ class PanelAjax
 	{
 		global $wpdb;
 
-		if ( false === check_ajax_referer('Debug_Bar_Console_Reloaded', 'nonce', false)) {
+		if ( false === check_ajax_referer('Debug_Bar_Console', 'nonce', false)) {
 			die();
 		}
 

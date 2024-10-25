@@ -4,9 +4,9 @@
  *
  * @since 1.0.0
  *
- * @package DebugBarConsoleReloaded/Helpers
+ * @package DebugBarConsole/Helpers
  */
-namespace WW\DebugBarConsoleReloaded\Helpers;
+namespace WW\DebugBarConsole\Helpers;
 
 /**
  * Assets helper class.
@@ -78,6 +78,6 @@ class AssetsHelper
 			$assetPath = str_replace($extension, "{$suffix}{$extension}", $assetPath);
 		}
 
-		return plugins_url($assetPath, \DebugBarConsoleReloaded::FILE);
+		return plugins_url($assetPath, \DebugBarConsole::FILE);
 	}
 }
