@@ -47,7 +47,7 @@ class Panel extends \Debug_Bar_Panel
 		];
 
 		$mode = 'php';
-		$iframeCss = AssetsHelper::getStyleUrl('assets/css/iframe.css');
+		$iframeCss = AssetsHelper::getAssetUrl('assets/css/iframe.css', false);
 		?>
 		<form id="debug-bar-console" class="debug-bar-console-mode-<?php echo esc_attr($mode); ?>">
 		<input id="debug-bar-console-iframe-css" type="hidden" value="<?php echo esc_attr($iframeCss); ?>" />
