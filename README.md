@@ -1,10 +1,10 @@
-# Debug Bar Console Reloaded
+# Debug Bar Console
 
 ## Overview
 
-Adds a PHP/SQL console to the debug bar. Requires the [Debug Bar](https://wordpress.org/plugins/debug-bar/) plugin (v0.5 or later).
+Adds a PHP/SQL console panel to the Debug Bar. Requires the [Debug Bar](https://wordpress.org/plugins/debug-bar/) plugin (v0.5 or later).
 
-Forked from the defunct (and adored!) [Debug Bar Console](https://wordpress.org/plugins/debug-bar-console/) by [@koop](https://github.com/koop).
+This plugin was adopted in 2024 from the previous author, [@koop](https://github.com/koop).
 
 GPLv2 – http://opensource.org/licenses/gpl-2.0.php GNU Public License
 
