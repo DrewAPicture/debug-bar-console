@@ -11,7 +11,7 @@
 
 namespace WW\DebugBarConsole;
 
-use DebugBarConsole;
+use Debug_Bar_Panel;
 use WW\DebugBarConsole\Helpers\AssetsHelper;
 
 /**
@@ -19,7 +19,7 @@ use WW\DebugBarConsole\Helpers\AssetsHelper;
  *
  * @since 1.0
  */
-class Panel extends \Debug_Bar_Panel
+class Panel extends Debug_Bar_Panel
 {
 	/**
 	 * {@inheritDoc}
