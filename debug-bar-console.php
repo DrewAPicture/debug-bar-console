@@ -13,7 +13,7 @@
  */
 
 /**
- * Copyright (c) 2024, Drew Jaynes
+ * Copyright (c) 2026, Drew Jaynes
  * Copyright (c) 2011-2024, Daryl Koopersmith
  * http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */

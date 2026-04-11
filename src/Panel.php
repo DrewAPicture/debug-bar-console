@@ -4,7 +4,7 @@
  *
  * @package DebugBarConsole
  *
- * @copyright Copyright (c) 2024, Drew Jaynes
+ * @copyright Copyright (c) 2026, Drew Jaynes
  * @copyright Copyright (c) 2011-2024, Daryl Koopersmith
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
