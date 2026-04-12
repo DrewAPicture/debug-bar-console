@@ -28,8 +28,8 @@ if (!defined('ABSPATH')) exit;
  */
 class DebugBarConsole
 {
-	const VERSION = '1.0.0';
-	const FILE = __FILE__;
+	public const VERSION = '1.0.0';
+	public const FILE = __FILE__;
 
 	/**
 	 * Initializes the plugin.
