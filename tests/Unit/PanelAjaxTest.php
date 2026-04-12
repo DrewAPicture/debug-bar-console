@@ -28,6 +28,8 @@ class PanelAjaxTest extends TestCase
         Actions\expectAdded('wp_ajax_debug_bar_console')->once();
 
         (new PanelAjax)->init();
+
+        $this->addToAssertionCount(1);
     }
 
     #[DataProvider('providerPrintMySqlTableReturnsEarlyForEmptyInput')]
@@ -96,7 +98,6 @@ class PanelAjaxTest extends TestCase
         Functions\expect('esc_html')
             ->with($xssKey)
             ->andReturn(htmlspecialchars($xssKey));
-        Functions\stubs(['esc_sql']);
 
         // esc_attr/esc_html also called for colspan and the query
         Functions\expect('esc_attr')->andReturnFirstArg();

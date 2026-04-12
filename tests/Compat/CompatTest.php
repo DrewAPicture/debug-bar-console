@@ -4,7 +4,6 @@ namespace Tests\Compat;
 
 use Brain\Monkey;
 use Brain\Monkey\Functions;
-use DebugBarConsole\PanelAjax;
 use PHPUnit\Framework\TestCase;
 
 require_once dirname(__DIR__, 2).'/compat.php';
@@ -27,9 +26,10 @@ class CompatTest extends TestCase
     {
         Functions\expect('_deprecated_function')
             ->once()
-            ->with('Debug_Bar_Console::ajax', '1.0.0', \Mockery::type('string'));
+            ->with('Debug_Bar_Console::ajax', '1.0.0', \Mockery::type('string'))
+            ->andThrow(new \RuntimeException('deprecated'));
 
-        Functions\expect('check_ajax_referer')->andReturn(false);
+        $this->expectException(\RuntimeException::class);
 
         (new \Debug_Bar_Console)->ajax();
     }
@@ -45,6 +45,8 @@ class CompatTest extends TestCase
         ob_start();
         (new \Debug_Bar_Console)->print_mysql_table([['col' => 'val']]);
         ob_get_clean();
+
+        $this->addToAssertionCount(1);
     }
 
     public function testDebugBarConsolePanelTriggersDeprecationNotice(): void
@@ -54,6 +56,8 @@ class CompatTest extends TestCase
             ->with('debug_bar_console_panel', '1.0.0', \Mockery::type('string'));
 
         debug_bar_console_panel([]);
+
+        $this->addToAssertionCount(1);
     }
 
     public function testDebugBarConsolePanelAppendsPanelToArray(): void
@@ -71,7 +75,7 @@ class CompatTest extends TestCase
         Functions\stubs(['_deprecated_function']);
 
         $existing = new \Debug_Bar_Panel;
-        $result   = debug_bar_console_panel([$existing]);
+        $result = debug_bar_console_panel([$existing]);
 
         $this->assertCount(2, $result);
     }
@@ -83,5 +87,7 @@ class CompatTest extends TestCase
             ->with('debug_bar_console_scripts', '1.0.0', \Mockery::type('string'));
 
         debug_bar_console_scripts();
+
+        $this->addToAssertionCount(1);
     }
 }

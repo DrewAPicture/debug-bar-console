@@ -23,7 +23,8 @@ class PanelTest extends TestCase
 
     public function testPreRenderSetsVisible(): void
     {
-        $panel = new class extends Panel {
+        $panel = new class extends Panel
+        {
             public bool $visibleSet = false;
 
             public function set_visible($visible): void
@@ -46,7 +47,8 @@ class PanelTest extends TestCase
 
         Functions\expect('add_action')->once();
 
-        $panel = new class extends Panel {
+        $panel = new class extends Panel
+        {
             public ?string $titleSet = null;
 
             public function title($title = null): void

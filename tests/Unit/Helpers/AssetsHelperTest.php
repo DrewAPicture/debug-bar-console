@@ -5,6 +5,8 @@ namespace Tests\Unit\Helpers;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
 use DebugBarConsole\Helpers\AssetsHelper;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
 class AssetsHelperTest extends TestCase
@@ -40,7 +42,7 @@ class AssetsHelperTest extends TestCase
     {
         Functions\expect('plugins_url')
             ->once()
-            ->andReturnUsing(fn($path) => 'https://example.com/'.$path);
+            ->andReturnUsing(fn ($path) => 'https://example.com/'.$path);
 
         $result = AssetsHelper::getAssetUrl('assets/css/style.min.css', true);
 
@@ -48,34 +50,30 @@ class AssetsHelperTest extends TestCase
         $this->assertStringNotContainsString('src/', $result);
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGetAssetUrlConvertsToSrcPathWhenScriptDebugTrue(): void
     {
         define('SCRIPT_DEBUG', true);
 
         Functions\expect('plugins_url')
             ->once()
-            ->andReturnUsing(fn($path) => 'https://example.com/'.$path);
+            ->andReturnUsing(fn ($path) => 'https://example.com/'.$path);
 
         $result = AssetsHelper::getAssetUrl('assets/css/style.min.css', true);
 
         $this->assertStringContainsString('src/', $result);
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGetAssetUrlStripsMinSuffixInDevMode(): void
     {
         define('SCRIPT_DEBUG', true);
 
         Functions\expect('plugins_url')
             ->once()
-            ->andReturnUsing(fn($path) => 'https://example.com/'.$path);
+            ->andReturnUsing(fn ($path) => 'https://example.com/'.$path);
 
         $result = AssetsHelper::getAssetUrl('assets/css/style.min.css', true);
 
@@ -83,17 +81,15 @@ class AssetsHelperTest extends TestCase
         $this->assertStringContainsString('style.css', $result);
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGetAssetUrlIgnoresScriptDebugWhenAllowDevFalse(): void
     {
         define('SCRIPT_DEBUG', true);
 
         Functions\expect('plugins_url')
             ->once()
-            ->andReturnUsing(fn($path) => 'https://example.com/'.$path);
+            ->andReturnUsing(fn ($path) => 'https://example.com/'.$path);
 
         $result = AssetsHelper::getAssetUrl('assets/css/style.min.css', false);
 

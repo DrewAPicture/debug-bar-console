@@ -16,6 +16,10 @@ class ComposerStaticInite55f8904505fa92165955bdfcc154f3d
     );
 
     public static $prefixLengthsPsr4 = array (
+        'T' =>
+        array (
+            'Tests\\' => 6,
+        ),
         'S' =>
         array (
             'SzepeViktor\\PHPStan\\WordPress\\' => 30,
@@ -47,6 +51,10 @@ class ComposerStaticInite55f8904505fa92165955bdfcc154f3d
     );
 
     public static $prefixDirsPsr4 = array (
+        'Tests\\' =>
+        array (
+            0 => __DIR__ . '/../..' . '/tests',
+        ),
         'SzepeViktor\\PHPStan\\WordPress\\' =>
         array (
             0 => __DIR__ . '/..' . '/szepeviktor/phpstan-wordpress/src',
