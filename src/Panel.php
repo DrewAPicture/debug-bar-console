@@ -54,7 +54,7 @@ class Panel extends Debug_Bar_Panel
 		?>
 		<form id="debug-bar-console" class="debug-bar-console-mode-<?php echo esc_attr($mode); ?>">
 		<input id="debug-bar-console-iframe-css" type="hidden" value="<?php echo esc_attr($iframeCss); ?>" />
-		<?php wp_nonce_field('Debug_Bar_Console', '_wpnonce_debug_bar_console'); ?>
+		<?php wp_nonce_field('debug_bar_console', '_wpnonce_debug_bar_console'); ?>
 		<div id="debug-bar-console-wrap">
 			<ul class="debug-bar-console-tabs">
 				<?php foreach ( $modes as $slug => $title ):

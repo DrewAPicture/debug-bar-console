@@ -46,7 +46,7 @@ class PanelAjax
 	{
 		global $wpdb;
 
-		if ( false === check_ajax_referer('Debug_Bar_Console', 'nonce', false)) {
+		if ( false === check_ajax_referer('debug_bar_console', 'nonce', false)) {
 			die();
 		}
 
