@@ -9,10 +9,13 @@
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-namespace WW\DebugBarConsole;
+namespace DebugBarConsole;
 
 use Debug_Bar_Panel;
-use WW\DebugBarConsole\Helpers\AssetsHelper;
+use DebugBarConsole\Helpers\AssetsHelper;
+
+// Bail if accessed directly
+if (!defined('ABSPATH')) exit;
 
 /**
  * Registers the panel for Debug Bar.

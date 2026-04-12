@@ -6,7 +6,11 @@
  *
  * @package DebugBarConsole/Helpers
  */
-namespace WW\DebugBarConsole\Helpers;
+
+namespace DebugBarConsole\Helpers;
+
+// Bail if accessed directly
+if (!defined('ABSPATH')) exit;
 
 /**
  * Assets helper class.

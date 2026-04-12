@@ -10,15 +10,16 @@
  * Requires PHP: 7.4
  * Text Domain: debug-bar-console
  * Domain Path: /languages/
- */
-
-/**
+ *
  * Copyright (c) 2026, Drew Jaynes
  * Copyright (c) 2011-2024, Daryl Koopersmith
  * http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-use WW\DebugBarConsole\Integration;
+use DebugBarConsole\Integration;
+
+// Bail if accessed directly
+if (!defined('ABSPATH')) exit;
 
 /**
  * Main plugin class.

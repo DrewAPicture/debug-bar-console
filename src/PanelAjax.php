@@ -11,7 +11,10 @@
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-namespace WW\DebugBarConsole;
+namespace DebugBarConsole;
+
+// Bail if accessed directly
+if (!defined('ABSPATH')) exit;
 
 /**
  * Panel ajax class.
