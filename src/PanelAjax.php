@@ -83,7 +83,7 @@ class PanelAjax
 
 				if ('formatted' === $tab) {
 					// phpcs:ignore (No placeholders to prepare)
-					$this->printMysqlTable($results, $query);
+					$this->printMySqlTable($results, $query);
 				} else {
 					var_dump(print_r($results, true));
 				}
@@ -99,7 +99,7 @@ class PanelAjax
 	 * @param string $query Optional. Query text. Default empty string.
 	 * @return void
 	 */
-	protected function printMysqlTable($data, $query = '')
+	public function printMySqlTable($data, $query = '')
 	{
 		$keys = array_keys($data[0] ?? []);
 
