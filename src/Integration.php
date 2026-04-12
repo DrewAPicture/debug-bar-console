@@ -10,97 +10,87 @@
  * @copyright Copyright (c) 2011-2024, Daryl Koopersmith
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-namespace {
 
-	use WW\DebugBarConsole\Panel;
+namespace DebugBarConsole;
 
-	/**
-	 * Globally-namespaced panel class to avoid Debug Bar's incompatibility with
-	 * namespaces in panel class names.
-	 *
-	 * @since 1.0.0
-	 */
-	final class Debug_Bar_Console_Panel extends Panel{}
-}
+use Debug_Bar_Console;
+use DebugBarConsole\Helpers\AssetsHelper;
 
-namespace WW\DebugBarConsole {
+// Bail if accessed directly
+if (!defined('ABSPATH')) exit;
 
-	use Debug_Bar_Console_Panel;
-	use WW\DebugBarConsole\Helpers\AssetsHelper;
+/**
+ * Sets up the integration with Debug Bar.
+ *
+ * @since 1.0.0
+ */
+class Integration
+{
+    /**
+     * Starts the Debug Bar integration.
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
+    public function start() : void
+    {
+        add_filter('debug_bar_panels', [$this, 'registerPanel']);
+        add_action('debug_bar_enqueue_scripts', [$this, 'enqueueScripts']);
+    }
 
-	/**
-	 * Sets up the integration with Debug Bar.
-	 *
-	 * @since 1.0.0
-	 */
-	class Integration
-	{
-		/**
-		 * Starts the Debug Bar integration.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @return void
-		 */
-		public function start() : void
-		{
-			add_filter('debug_bar_panels', [$this, 'registerPanel']);
-			add_action('debug_bar_enqueue_scripts', [$this, 'enqueueScripts']);
-		}
+    /**
+     * Registers the panel.
+     *
+     * @param array<string, \Debug_Bar_Panel> $panels
+     *
+     * @return array
+     */
+    public function registerPanel($panels)
+    {
+        $panels[] = new Debug_Bar_Console;
 
-		/**
-		 * Registers the panel.
-		 *
-		 * @param array<string, \Debug_Bar_Panel> $panels
-		 *
-		 * @return array
-		 */
-		public function registerPanel($panels)
-		{
-			$panels[] = new Debug_Bar_Console_Panel;
+        return $panels;
+    }
 
-			return $panels;
-		}
+    /**
+     * Enqueues scripts and styles.
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
+    public function enqueueScripts()
+    {
+        $cmBasePath = "src/assets/codemirror";
 
-		/**
-		 * Enqueues scripts and styles.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @return void
-		 */
-		public function enqueueScripts()
-		{
-			$cmBasePath = "src/assets/codemirror";
+        // Codemirror
+        wp_enqueue_style(
+            'debug-bar-console-cm',
+            AssetsHelper::getAssetUrl("{$cmBasePath}/lib/codemirror.css", false),
+            [],
+            '2.22'
+        );
+        wp_enqueue_script(
+            'debug-bar-console-cm',
+            AssetsHelper::getAssetUrl("{$cmBasePath}/debug-bar-codemirror.js", false),
+            [],
+            '2.22',
+            ['in_footer' => false]
+        );
 
-			// Codemirror
-			wp_enqueue_style(
-				'debug-bar-console-cm',
-				AssetsHelper::getAssetUrl("{$cmBasePath}/lib/codemirror.css", false),
-				[],
-				'2.22'
-			);
-			wp_enqueue_script(
-				'debug-bar-console-cm',
-				AssetsHelper::getAssetUrl("{$cmBasePath}/debug-bar-codemirror.js", false),
-				[],
-				'2.22',
-				['in_footer' => false]
-			);
-
-			wp_enqueue_style(
-				'debug-bar-console',
-				AssetsHelper::getAssetUrl('assets/css/debug-bar-console.min.css'),
-				['debug-bar', 'debug-bar-console-cm'],
-				\DebugBarConsole::VERSION
-			);
-			wp_enqueue_script(
-				'debug-bar-console',
-				AssetsHelper::getAssetUrl('assets/js/debug-bar-console.min.js'),
-				['debug-bar', 'debug-bar-console-cm'],
-				\DebugBarConsole::VERSION,
-				['in_footer' => false]
-			);
-		}
-	}
+        wp_enqueue_style(
+            'debug-bar-console',
+            AssetsHelper::getAssetUrl('assets/css/debug-bar-console.min.css'),
+            ['debug-bar', 'debug-bar-console-cm'],
+            \DebugBarConsole::VERSION
+        );
+        wp_enqueue_script(
+            'debug-bar-console',
+            AssetsHelper::getAssetUrl('assets/js/debug-bar-console.min.js'),
+            ['debug-bar', 'debug-bar-console-cm'],
+            \DebugBarConsole::VERSION,
+            ['in_footer' => false]
+        );
+    }
 }
