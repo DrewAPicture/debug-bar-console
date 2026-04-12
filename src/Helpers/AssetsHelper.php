@@ -1,16 +1,15 @@
 <?php
+
 /**
  * Assets Helpers
  *
  * @since   1.0.0
- *
- * @package DebugBarConsole/Helpers
  */
 
 namespace DebugBarConsole\Helpers;
 
 // Bail if accessed directly
-if (!defined('ABSPATH')) {
+if (! defined('ABSPATH')) {
     exit;
 }
 
@@ -26,15 +25,13 @@ class AssetsHelper
      *
      * @since 1.0.0
      *
-     * @param string $assetPath Relative asset path.
-     * @param bool   $allowDev  Whether to allow returning development asset URLs.
-     *
-     * @return string
+     * @param  string  $assetPath  Relative asset path.
+     * @param  bool  $allowDev  Whether to allow returning development asset URLs.
      */
     public static function getAssetUrl(
         string $assetPath,
         bool $allowDev = true
-    ) : string {
+    ): string {
         $assetPath = self::maybeConvertToSrc($assetPath, $allowDev);
 
         return plugins_url($assetPath, \DebugBarConsole::FILE);
@@ -42,20 +39,15 @@ class AssetsHelper
 
     /**
      * (Maybe) converts the asset path to src/.
-     *
-     * @param string $assetPath
-     * @param bool   $allowDev
-     *
-     * @return string
      */
     protected static function maybeConvertToSrc(
         string $assetPath,
         bool $allowDev = true
-    ) : string {
+    ): string {
         $useSrc = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG;
 
         // Use source instead.
-        if (true === $allowDev && $useSrc) {
+        if ($allowDev === true && $useSrc) {
             $assetPath = 'src/'.str_replace('.min', '', $assetPath);
         }
 

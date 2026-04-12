@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: Debug Bar Console
  * Plugin URI: http://wordpress.org/extend/plugins/debug-bar-console/
@@ -19,7 +20,7 @@
 use DebugBarConsole\Integration;
 
 // Bail if accessed directly
-if (!defined('ABSPATH')) {
+if (! defined('ABSPATH')) {
     exit;
 }
 
@@ -31,22 +32,21 @@ if (!defined('ABSPATH')) {
 class DebugBarConsole
 {
     public const VERSION = '1.0.0';
+
     public const FILE = __FILE__;
 
     /**
      * Initializes the plugin.
      *
      * @since 1.0.0
-     *
-     * @return void
      */
-    public function init() : void
+    public function init(): void
     {
         require_once __DIR__.'/vendor/autoload.php';
         require_once __DIR__.'/compat.php';
 
-        (new Integration())->start();
+        (new Integration)->start();
     }
 }
 
-add_action('init', fn() => (new DebugBarConsole())->init());
+add_action('init', fn () => (new DebugBarConsole)->init());

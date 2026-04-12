@@ -1,10 +1,9 @@
 <?php
+
 /**
  * Debug Bar integration
  *
  * @since     1.0.0
- *
- * @package   DebugBarConsole
  *
  * @copyright Copyright (c) 2026, Drew Jaynes
  * @copyright Copyright (c) 2011-2024, Daryl Koopersmith
@@ -17,7 +16,7 @@ use Debug_Bar_Console;
 use DebugBarConsole\Helpers\AssetsHelper;
 
 // Bail if accessed directly
-if (!defined('ABSPATH')) {
+if (! defined('ABSPATH')) {
     exit;
 }
 
@@ -32,10 +31,8 @@ class Integration
      * Starts the Debug Bar integration.
      *
      * @since 1.0.0
-     *
-     * @return void
      */
-    public function start() : void
+    public function start(): void
     {
         add_filter('debug_bar_panels', [$this, 'registerPanel']);
         add_action('debug_bar_enqueue_scripts', [$this, 'enqueueScripts']);
@@ -44,11 +41,10 @@ class Integration
     /**
      * Registers the panel.
      *
-     * @param array<string, \Debug_Bar_Panel> $panels
-     *
-     * @return array
+     * @param  array<int, \Debug_Bar_Panel>  $panels
+     * @return array<int, \Debug_Bar_Panel>
      */
-    public function registerPanel($panels)
+    public function registerPanel(array $panels): array
     {
         $panels[] = new Debug_Bar_Console;
 
@@ -59,12 +55,10 @@ class Integration
      * Enqueues scripts and styles.
      *
      * @since 1.0.0
-     *
-     * @return void
      */
-    public function enqueueScripts()
+    public function enqueueScripts(): void
     {
-        $cmBasePath = "src/assets/codemirror";
+        $cmBasePath = 'src/assets/codemirror';
 
         // Codemirror
         wp_enqueue_style(

@@ -2,7 +2,6 @@
 /**
  * Console panel registration class
  *
- * @package   DebugBarConsole
  *
  * @copyright Copyright (c) 2026, Drew Jaynes
  * @copyright Copyright (c) 2011-2024, Daryl Koopersmith
@@ -15,7 +14,7 @@ use Debug_Bar_Panel;
 use DebugBarConsole\Helpers\AssetsHelper;
 
 // Bail if accessed directly
-if (!defined('ABSPATH')) {
+if (! defined('ABSPATH')) {
     exit;
 }
 
@@ -29,17 +28,17 @@ class Panel extends Debug_Bar_Panel
     /**
      * {@inheritDoc}
      */
-    function init()
+    public function init(): void
     {
         $this->title(__('Console', 'debug-bar-console'));
 
-        (new PanelAjax())->init();
+        (new PanelAjax)->init();
     }
 
     /**
      * {@inheritDoc}
      */
-    function prerender()
+    public function prerender(): void
     {
         $this->set_visible(true);
     }
@@ -47,7 +46,7 @@ class Panel extends Debug_Bar_Panel
     /**
      * {@inheritDoc}
      */
-    function render()
+    public function render(): void
     {
         $modes = [
             'php' => __('PHP', 'debug-bar-console'),
@@ -69,7 +68,7 @@ class Panel extends Debug_Bar_Panel
             <div id="debug-bar-console-wrap">
                 <ul class="debug-bar-console-tabs">
                     <?php
-                    foreach ($modes as $slug => $title):
+                    foreach ($modes as $slug => $title) {
                         $classes = 'debug-bar-console-tab';
                         if ($slug == $mode) {
                             $classes .= ' debug-bar-console-tab-active';
@@ -83,7 +82,7 @@ class Panel extends Debug_Bar_Panel
                             echo esc_attr($slug); ?>"/>
                         </li>
                     <?php
-                    endforeach; ?>
+                    } ?>
                 </ul>
                 <div id="debug-bar-console-submit">
                     <span><?php
@@ -146,4 +145,3 @@ class Panel extends Debug_Bar_Panel
         <?php
     }
 }
-

@@ -1,20 +1,21 @@
 <?php
+
 /**
  * Code that exists for compat reasons
  *
  * @since     1.0.0
- *
- * @package   DebugBarConsole
  *
  * @copyright Copyright (c) 2026, Drew Jaynes
  * @copyright Copyright (c) 2011-2024, Daryl Koopersmith
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-use DebugBarConsole\{Integration, Panel, PanelAjax};
+use DebugBarConsole\Integration;
+use DebugBarConsole\Panel;
+use DebugBarConsole\PanelAjax;
 
 // Bail if accessed directly
-if (!defined('ABSPATH')) {
+if (! defined('ABSPATH')) {
     exit;
 }
 
@@ -44,7 +45,7 @@ class Debug_Bar_Console extends Panel
             PanelAjax::class.'::printOutput(). Scheduled for removal in Debug Bar Console v2.0.0.'
         );
 
-        (new PanelAjax())->printOutput();
+        (new PanelAjax)->printOutput();
     }
 
     public function print_mysql_table($data, $query = '')
@@ -57,7 +58,7 @@ class Debug_Bar_Console extends Panel
 
         // Invoke protected printMySqlTable() method.
         (new ReflectionClass(PanelAjax::class))->getMethod('printMySqlTable')
-            ->invoke(new PanelAjax(), $data, $query);
+            ->invoke(new PanelAjax, $data, $query);
     }
 }
 
@@ -70,8 +71,6 @@ class Debug_Bar_Console extends Panel
  * @since      1.0.0 Relocated to compat.php
  * @since      0.1
  *
- * @param $panels
- *
  * @return array
  */
 function debug_bar_console_panel($panels)
@@ -82,7 +81,7 @@ function debug_bar_console_panel($panels)
         Integration::class.'::registerPanel(). Scheduled for removal in Debug Bar Console v2.0.0.'
     );
 
-    return array_merge($panels, [new Debug_Bar_Console()]);
+    return array_merge($panels, [new Debug_Bar_Console]);
 }
 
 /**
