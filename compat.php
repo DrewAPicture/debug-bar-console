@@ -2,9 +2,9 @@
 /**
  * Code that exists for compat reasons
  *
- * @since 1.0.0
+ * @since     1.0.0
  *
- * @package DebugBarConsole
+ * @package   DebugBarConsole
  *
  * @copyright Copyright (c) 2026, Drew Jaynes
  * @copyright Copyright (c) 2011-2024, Daryl Koopersmith
@@ -14,7 +14,9 @@
 use DebugBarConsole\{Integration, Panel, PanelAjax};
 
 // Bail if accessed directly
-if (!defined('ABSPATH')) exit;
+if (!defined('ABSPATH')) {
+    exit;
+}
 
 /**
  * Globally-namespaced panel class.
@@ -26,7 +28,8 @@ if (!defined('ABSPATH')) exit;
  * @since 1.0.0 Relocated to compat.php
  * @since 0.1
  */
-class Debug_Bar_Console extends Panel{
+class Debug_Bar_Console extends Panel
+{
     /**
      * Legacy panel AJAX callback.
      *
@@ -35,14 +38,22 @@ class Debug_Bar_Console extends Panel{
      */
     public function ajax()
     {
-        _deprecated_function(__METHOD__, '1.0.0', PanelAjax::class.'::printOutput(). Scheduled for removal in Debug Bar Console v2.0.0.');
+        _deprecated_function(
+            __METHOD__,
+            '1.0.0',
+            PanelAjax::class.'::printOutput(). Scheduled for removal in Debug Bar Console v2.0.0.'
+        );
 
         (new PanelAjax())->printOutput();
     }
 
-    public function print_mysql_table( $data, $query = '')
+    public function print_mysql_table($data, $query = '')
     {
-        _deprecated_function(__METHOD__, '1.0.0', PanelAjax::class.'::printMySqlTable(). Scheduled for removal in Debug Bar Console v2.0.0.');
+        _deprecated_function(
+            __METHOD__,
+            '1.0.0',
+            PanelAjax::class.'::printMySqlTable(). Scheduled for removal in Debug Bar Console v2.0.0.'
+        );
 
         // Invoke protected printMySqlTable() method.
         (new ReflectionClass(PanelAjax::class))->getMethod('printMySqlTable')
@@ -56,14 +67,20 @@ class Debug_Bar_Console extends Panel{
  * This function will be removed in 2.0.0
  *
  * @deprecated since 1.0.0, see Integration::registerPanel().
- * @since 1.0.0 Relocated to compat.php
- * @since 0.1
+ * @since      1.0.0 Relocated to compat.php
+ * @since      0.1
  *
  * @param $panels
+ *
  * @return array
  */
-function debug_bar_console_panel($panels) {
-    _deprecated_function(__FUNCTION__, '1.0.0', Integration::class.'::registerPanel(). Scheduled for removal in Debug Bar Console v2.0.0.');
+function debug_bar_console_panel($panels)
+{
+    _deprecated_function(
+        __FUNCTION__,
+        '1.0.0',
+        Integration::class.'::registerPanel(). Scheduled for removal in Debug Bar Console v2.0.0.'
+    );
 
     return array_merge($panels, [new Debug_Bar_Console()]);
 }
@@ -74,11 +91,16 @@ function debug_bar_console_panel($panels) {
  * This function will be removed in 2.0.0
  *
  * @deprecated since 1.0.0, see Integration::registerScripts().
- * @since 1.0.0 Relocated to compat.php
- * @since 0.1
+ * @since      1.0.0 Relocated to compat.php
+ * @since      0.1
  *
  * @return void
  */
-function debug_bar_console_scripts() {
-    _deprecated_function(__FUNCTION__, '1.0.0', Integration::class.'::registerScripts(). Scheduled for removal in Debug Bar Console v2.0.0.');
+function debug_bar_console_scripts()
+{
+    _deprecated_function(
+        __FUNCTION__,
+        '1.0.0',
+        Integration::class.'::registerScripts(). Scheduled for removal in Debug Bar Console v2.0.0.'
+    );
 }

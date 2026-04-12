@@ -19,7 +19,9 @@
 use DebugBarConsole\Integration;
 
 // Bail if accessed directly
-if (!defined('ABSPATH')) exit;
+if (!defined('ABSPATH')) {
+    exit;
+}
 
 /**
  * Main plugin class.
@@ -28,23 +30,23 @@ if (!defined('ABSPATH')) exit;
  */
 class DebugBarConsole
 {
-	public const VERSION = '1.0.0';
-	public const FILE = __FILE__;
+    public const VERSION = '1.0.0';
+    public const FILE = __FILE__;
 
-	/**
-	 * Initializes the plugin.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function init() : void
-	{
-		require_once __DIR__ . '/vendor/autoload.php';
-		require_once __DIR__ . '/compat.php';
+    /**
+     * Initializes the plugin.
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
+    public function init() : void
+    {
+        require_once __DIR__.'/vendor/autoload.php';
+        require_once __DIR__.'/compat.php';
 
-		(new Integration())->start();
-	}
+        (new Integration())->start();
+    }
 }
 
 add_action('init', fn() => (new DebugBarConsole())->init());
