@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'WW\\DebugBarConsole\\' => array($baseDir . '/src'),
+    'DebugBarConsole\\' => array($baseDir . '/src'),
 );

@@ -3,7 +3,7 @@
         'name' => 'drewapicture/debug-bar-console',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '55f0ee48b138e430bc3030e8d66959d902d3edfc',
+        'reference' => '11a912bfc672783f99667ce8b63def678f017ca2',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'drewapicture/debug-bar-console' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '55f0ee48b138e430bc3030e8d66959d902d3edfc',
+            'reference' => '11a912bfc672783f99667ce8b63def678f017ca2',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
