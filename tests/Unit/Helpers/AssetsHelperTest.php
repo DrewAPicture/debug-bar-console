@@ -4,6 +4,7 @@ namespace Tests\Unit\Helpers;
 
 use Brain\Monkey;
 use Brain\Monkey\Functions;
+use DebugBarConsole;
 use DebugBarConsole\Helpers\AssetsHelper;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
@@ -27,7 +28,7 @@ class AssetsHelperTest extends TestCase
     {
         Functions\expect('plugins_url')
             ->once()
-            ->with('assets/css/style.css', \DebugBarConsole::FILE)
+            ->with('assets/css/style.css', DebugBarConsole::FILE)
             ->andReturn('https://example.com/plugins/debug-bar-console/assets/css/style.css');
 
         $result = AssetsHelper::getAssetUrl('assets/css/style.css', false);

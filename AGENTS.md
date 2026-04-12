@@ -8,6 +8,7 @@
 - **Data provider naming** — mirror the corresponding test method name, replacing the `test` prefix with `provider` (e.g. `testFoo()` → `providerFoo()`)
 - **Avoid `shouldReceive()`** — prefer explicit mock setup; `shouldReceive()` fails silently and can mask real errors
 - **Concrete test doubles** — when a test needs a concrete test class, define it at the bottom of the same test file rather than in a separate file
+- **Imports** — avoid fully-qualified class names inline; import all classes via `use` statements at the top of the file
 
 ## PHP Coding Standards
 

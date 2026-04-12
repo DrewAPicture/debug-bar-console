@@ -4,7 +4,11 @@ namespace Tests\Compat;
 
 use Brain\Monkey;
 use Brain\Monkey\Functions;
+use Debug_Bar_Console;
+use Debug_Bar_Panel;
+use Mockery;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 require_once dirname(__DIR__, 2).'/compat.php';
 
@@ -26,24 +30,24 @@ class CompatTest extends TestCase
     {
         Functions\expect('_deprecated_function')
             ->once()
-            ->with('Debug_Bar_Console::ajax', '1.0.0', \Mockery::type('string'))
-            ->andThrow(new \RuntimeException('deprecated'));
+            ->with('Debug_Bar_Console::ajax', '1.0.0', Mockery::type('string'))
+            ->andThrow(new RuntimeException('deprecated'));
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
 
-        (new \Debug_Bar_Console)->ajax();
+        (new Debug_Bar_Console)->ajax();
     }
 
     public function testPrintMysqlTableTriggersDeprecationNotice(): void
     {
         Functions\expect('_deprecated_function')
             ->once()
-            ->with('Debug_Bar_Console::print_mysql_table', '1.0.0', \Mockery::type('string'));
+            ->with('Debug_Bar_Console::print_mysql_table', '1.0.0', Mockery::type('string'));
 
         Functions\stubs(['esc_attr', 'esc_html', 'esc_sql']);
 
         ob_start();
-        (new \Debug_Bar_Console)->print_mysql_table([['col' => 'val']]);
+        (new Debug_Bar_Console)->print_mysql_table([['col' => 'val']]);
         ob_get_clean();
 
         $this->addToAssertionCount(1);
@@ -53,7 +57,7 @@ class CompatTest extends TestCase
     {
         Functions\expect('_deprecated_function')
             ->once()
-            ->with('debug_bar_console_panel', '1.0.0', \Mockery::type('string'));
+            ->with('debug_bar_console_panel', '1.0.0', Mockery::type('string'));
 
         debug_bar_console_panel([]);
 
@@ -67,14 +71,14 @@ class CompatTest extends TestCase
         $result = debug_bar_console_panel([]);
 
         $this->assertCount(1, $result);
-        $this->assertInstanceOf(\Debug_Bar_Console::class, $result[0]);
+        $this->assertInstanceOf(Debug_Bar_Console::class, $result[0]);
     }
 
     public function testDebugBarConsolePanelPreservesExistingPanels(): void
     {
         Functions\stubs(['_deprecated_function']);
 
-        $existing = new \Debug_Bar_Panel;
+        $existing = new Debug_Bar_Panel;
         $result = debug_bar_console_panel([$existing]);
 
         $this->assertCount(2, $result);
@@ -84,7 +88,7 @@ class CompatTest extends TestCase
     {
         Functions\expect('_deprecated_function')
             ->once()
-            ->with('debug_bar_console_scripts', '1.0.0', \Mockery::type('string'));
+            ->with('debug_bar_console_scripts', '1.0.0', Mockery::type('string'));
 
         debug_bar_console_scripts();
 

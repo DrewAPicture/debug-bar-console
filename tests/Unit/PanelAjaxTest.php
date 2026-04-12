@@ -6,6 +6,7 @@ use Brain\Monkey;
 use Brain\Monkey\Actions;
 use Brain\Monkey\Functions;
 use DebugBarConsole\PanelAjax;
+use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -45,7 +46,7 @@ class PanelAjaxTest extends TestCase
         $this->assertSame('', $output);
     }
 
-    public static function providerPrintMySqlTableReturnsEarlyForEmptyInput(): \Generator
+    public static function providerPrintMySqlTableReturnsEarlyForEmptyInput(): Generator
     {
         yield 'empty array' => [[]];
         yield 'first row is empty' => [[[]]];

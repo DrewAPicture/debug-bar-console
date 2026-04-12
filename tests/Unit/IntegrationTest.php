@@ -6,7 +6,11 @@ use Brain\Monkey;
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
+use Debug_Bar_Console;
+use Debug_Bar_Panel;
+use DebugBarConsole;
 use DebugBarConsole\Integration;
+use Mockery;
 use PHPUnit\Framework\TestCase;
 
 class IntegrationTest extends TestCase
@@ -49,12 +53,12 @@ class IntegrationTest extends TestCase
         $result = (new Integration)->registerPanel($panels);
 
         $this->assertCount(1, $result);
-        $this->assertInstanceOf(\Debug_Bar_Console::class, $result[0]);
+        $this->assertInstanceOf(Debug_Bar_Console::class, $result[0]);
     }
 
     public function testRegisterPanelPreservesExistingPanels(): void
     {
-        $existing = new \Debug_Bar_Panel;
+        $existing = new Debug_Bar_Panel;
         $result = (new Integration)->registerPanel([$existing]);
 
         $this->assertCount(2, $result);
@@ -72,11 +76,11 @@ class IntegrationTest extends TestCase
     {
         Functions\expect('plugins_url')->andReturn('https://example.com/asset');
         Functions\expect('wp_enqueue_style')
-            ->with('debug-bar-console-cm', \Mockery::any(), \Mockery::any(), \Mockery::any())
+            ->with('debug-bar-console-cm', Mockery::any(), Mockery::any(), Mockery::any())
             ->once();
         Functions\expect('wp_enqueue_script')->twice();
         Functions\expect('wp_enqueue_style')
-            ->with('debug-bar-console', \Mockery::any(), \Mockery::any(), \Mockery::any())
+            ->with('debug-bar-console', Mockery::any(), Mockery::any(), Mockery::any())
             ->once();
 
         (new Integration)->enqueueScripts();
@@ -89,10 +93,10 @@ class IntegrationTest extends TestCase
         Functions\expect('plugins_url')->andReturn('https://example.com/asset');
         Functions\expect('wp_enqueue_style')->twice();
         Functions\expect('wp_enqueue_script')
-            ->with('debug-bar-console-cm', \Mockery::any(), \Mockery::any(), \Mockery::any(), \Mockery::any())
+            ->with('debug-bar-console-cm', Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
             ->once();
         Functions\expect('wp_enqueue_script')
-            ->with('debug-bar-console', \Mockery::any(), \Mockery::any(), \Mockery::any(), \Mockery::any())
+            ->with('debug-bar-console', Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
             ->once();
 
         (new Integration)->enqueueScripts();
@@ -105,10 +109,10 @@ class IntegrationTest extends TestCase
         Functions\expect('plugins_url')->andReturn('https://example.com/asset');
         Functions\expect('wp_enqueue_style')->twice();
         Functions\expect('wp_enqueue_script')
-            ->with('debug-bar-console-cm', \Mockery::any(), \Mockery::any(), '2.22', \Mockery::any())
+            ->with('debug-bar-console-cm', Mockery::any(), Mockery::any(), '2.22', Mockery::any())
             ->once();
         Functions\expect('wp_enqueue_script')
-            ->with('debug-bar-console', \Mockery::any(), \Mockery::any(), \DebugBarConsole::VERSION, \Mockery::any())
+            ->with('debug-bar-console', Mockery::any(), Mockery::any(), DebugBarConsole::VERSION, Mockery::any())
             ->once();
 
         (new Integration)->enqueueScripts();
