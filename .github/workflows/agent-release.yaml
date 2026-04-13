@@ -73,9 +73,9 @@ jobs:
 
           # Stable package must never ship agent docs or dev metadata.
           disallowed_pattern='^\.agent/.+$|^AGENTS\.md$|^CLAUDE\.md$|^tests/|^\.github/|^\.claude/|^phpstan\.neon$|^phpunit\.xml$|^pint\.json$'
-          if echo "${archive_files}" | rg -n "${disallowed_pattern}" >/dev/null; then
+          if echo "${archive_files}" | grep -E "${disallowed_pattern}" >/dev/null; then
             echo "Stable archive contains disallowed files." >&2
-            echo "${archive_files}" | rg -n "${disallowed_pattern}" >&2 || true
+            echo "${archive_files}" | grep -E "${disallowed_pattern}" >&2 || true
             exit 1
           fi
 
@@ -112,16 +112,16 @@ jobs:
           )
 
           for required_path in "${required_paths[@]}"; do
-            if ! echo "${archive_files}" | rg -n "^${required_path}$" >/dev/null; then
+            if ! echo "${archive_files}" | grep -E "^${required_path}$" >/dev/null; then
               echo "Agent archive missing required file: ${required_path}" >&2
               exit 1
             fi
           done
 
           disallowed_pattern='^tests/|^\.github/|^\.claude/|^phpstan\.neon$|^phpunit\.xml$|^pint\.json$'
-          if echo "${archive_files}" | rg -n "${disallowed_pattern}" >/dev/null; then
+          if echo "${archive_files}" | grep -E "${disallowed_pattern}" >/dev/null; then
             echo "Agent archive contains disallowed files." >&2
-            echo "${archive_files}" | rg -n "${disallowed_pattern}" >&2 || true
+            echo "${archive_files}" | grep -E "${disallowed_pattern}" >&2 || true
             exit 1
           fi
 
