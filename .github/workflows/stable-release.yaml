@@ -1,0 +1,126 @@
+name: Stable Release Package
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Semver tag to package as a stable release (e.g. 1.2.3). Created at the selected branch HEAD if it does not already exist.
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  package-stable:
+    name: Package Stable Release
+    runs-on: ubuntu-latest
+    env:
+      PLUGIN_SLUG: debug-bar-console
+
+    steps:
+      - name: Resolve release metadata
+        id: meta
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            source_tag="${{ github.ref_name }}"
+          else
+            source_tag="${{ inputs.release_tag }}"
+          fi
+
+          if [[ -z "${source_tag}" ]]; then
+            echo "Unable to determine source tag." >&2
+            exit 1
+          fi
+
+          # When triggered manually, create the tag at the selected branch HEAD
+          # if it does not already exist.
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            if ! gh api "repos/${{ github.repository }}/git/ref/tags/${source_tag}" --silent 2>/dev/null; then
+              echo "Tag ${source_tag} not found — creating at ${{ github.sha }}."
+              gh api repos/${{ github.repository }}/git/refs \
+                --method POST \
+                --field ref="refs/tags/${source_tag}" \
+                --field sha="${{ github.sha }}"
+            fi
+          fi
+
+          release_title="v${source_tag}"
+          stable_zip="${PLUGIN_SLUG}-${source_tag}.zip"
+
+          echo "source_tag=${source_tag}" >> "${GITHUB_OUTPUT}"
+          echo "release_title=${release_title}" >> "${GITHUB_OUTPUT}"
+          echo "stable_zip=${stable_zip}" >> "${GITHUB_OUTPUT}"
+
+      - name: Checkout source tag
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ steps.meta.outputs.source_tag }}
+
+      - name: Resolve source commit SHA
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          # GitHub's API rejects a tag name as target_commitish when creating
+          # a new release. Resolve to the underlying commit SHA here, after
+          # checkout, when .git is available.
+          source_sha="$(git rev-list -n 1 "refs/tags/${{ steps.meta.outputs.source_tag }}")"
+          echo "source_sha=${source_sha}" >> "${GITHUB_OUTPUT}"
+
+      - name: Build stable archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          git archive \
+            --worktree-attributes \
+            --format=zip \
+            --prefix=debug-bar-console/ \
+            --output="dist/${{ steps.meta.outputs.stable_zip }}" \
+            "${{ steps.meta.outputs.source_tag }}"
+
+      - name: Validate stable archive exclusions
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive_path="dist/${{ steps.meta.outputs.stable_zip }}"
+          archive_files="$(unzip -Z1 "${archive_path}")"
+
+          # Stable package must never ship agent docs or dev metadata.
+          disallowed_pattern='^debug-bar-console/\.agent/.+$|^debug-bar-console/AGENTS\.md$|^debug-bar-console/CLAUDE\.md$|^debug-bar-console/tests/|^debug-bar-console/\.github/|^debug-bar-console/\.claude/|^debug-bar-console/phpstan\.neon$|^debug-bar-console/phpunit\.xml$|^debug-bar-console/pint\.json$'
+          if echo "${archive_files}" | grep -E "${disallowed_pattern}" >/dev/null; then
+            echo "Stable archive contains disallowed files." >&2
+            echo "${archive_files}" | grep -E "${disallowed_pattern}" >&2 || true
+            exit 1
+          fi
+
+      - name: Create checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd dist
+          shasum -a 256 "${{ steps.meta.outputs.stable_zip }}" > "${{ steps.meta.outputs.stable_zip }}.sha256"
+
+      - name: Publish stable release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.meta.outputs.source_tag }}
+          name: ${{ steps.meta.outputs.release_title }}
+          prerelease: false
+          make_latest: true
+          target_commitish: ${{ steps.commit.outputs.source_sha }}
+          files: |
+            dist/${{ steps.meta.outputs.stable_zip }}
+            dist/${{ steps.meta.outputs.stable_zip }}.sha256
+          fail_on_unmatched_files: true
+          generate_release_notes: false
