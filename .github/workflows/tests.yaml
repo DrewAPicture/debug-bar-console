@@ -12,10 +12,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.0', '8.1', '8.2', '8.3', '8.4', '8.5']
         include:
-          - php-version: '8.0'
-            composer-options: '--ignore-platform-reqs'
+          - php-version: ['8.0', '8.1']
+            composer-options: '--no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs'
+          - php-version: ['8.2', '8.3', '8.4', '8.5']
+            composer-options: '--no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --optimize-autoloader'
 
     steps:
       - name: Checkout
@@ -27,20 +28,12 @@ jobs:
           php-version: ${{ matrix.php-version }}
           coverage: none
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Setup path for composer cache
-        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+      - name: Install dependencies
+        uses: ramsey/composer-install@v3
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - name: Install Dependencies
-        run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --optimize-autoloader
+          composer-options: ${{ matrix.composer-options }}
+          custom-cache-key: $(composer config cache-files-dir)
+          custom-cache-suffix: ${{ matrix.php-version }}
 
       - name: Run PHPUnit
         run: ./vendor/bin/phpunit
@@ -59,20 +52,12 @@ jobs:
           php-version: '8.4'
           coverage: none
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Setup path for composer cache
-        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+      - name: Install dependencies
+        uses: ramsey/composer-install@v3
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - name: Install Dependencies
-        run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --optimize-autoloader
+          composer-options: ${{ matrix.composer-options }}
+          custom-cache-key: $(composer config cache-files-dir)
+          custom-cache-suffix: ${{ matrix.php-version }}
 
       - name: Run Pint
         run: ./vendor/bin/pint --test
