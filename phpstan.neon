@@ -3,7 +3,6 @@ includes:
 
 parameters:
     level: max
-    phpVersion: 80300
     paths:
         - src
         - debug-bar-console.php

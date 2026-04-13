@@ -12,7 +12,6 @@ namespace DebugBarConsole;
 
 use Debug_Bar_Panel;
 use DebugBarConsole\Helpers\AssetsHelper;
-use Override;
 
 // Bail if accessed directly
 if (! defined('ABSPATH')) {
@@ -31,7 +30,6 @@ class Panel extends Debug_Bar_Panel
      *
      * @since 1.0.0
      */
-    #[Override]
     public function init(): void
     {
         $this->title(__('Console', 'debug-bar-console'));
@@ -44,7 +42,6 @@ class Panel extends Debug_Bar_Panel
      *
      * @since 1.0.0
      */
-    #[Override]
     public function prerender(): void
     {
         $this->set_visible(true);
@@ -55,7 +52,6 @@ class Panel extends Debug_Bar_Panel
      *
      * @since 1.0.0
      */
-    #[Override]
     public function render(): void
     {
         $modes = [

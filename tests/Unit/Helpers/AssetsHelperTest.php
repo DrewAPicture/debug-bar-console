@@ -6,14 +6,8 @@ use Brain\Monkey;
 use Brain\Monkey\Functions;
 use DebugBarConsole;
 use DebugBarConsole\Helpers\AssetsHelper;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\CoversMethod;
-use PHPUnit\Framework\Attributes\PreserveGlobalState;
-use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(AssetsHelper::class)]
-#[CoversMethod(AssetsHelper::class, 'getAssetUrl')]
 class AssetsHelperTest extends TestCase
 {
     protected function setUp(): void
@@ -55,8 +49,10 @@ class AssetsHelperTest extends TestCase
         $this->assertStringNotContainsString('src/', $result);
     }
 
-    #[RunInSeparateProcess]
-    #[PreserveGlobalState(false)]
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function testGetAssetUrlConvertsToSrcPathWhenScriptDebugTrue(): void
     {
         define('SCRIPT_DEBUG', true);
@@ -70,8 +66,10 @@ class AssetsHelperTest extends TestCase
         $this->assertStringContainsString('src/', $result);
     }
 
-    #[RunInSeparateProcess]
-    #[PreserveGlobalState(false)]
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function testGetAssetUrlStripsMinSuffixInDevMode(): void
     {
         define('SCRIPT_DEBUG', true);
@@ -86,8 +84,10 @@ class AssetsHelperTest extends TestCase
         $this->assertStringContainsString('style.css', $result);
     }
 
-    #[RunInSeparateProcess]
-    #[PreserveGlobalState(false)]
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function testGetAssetUrlIgnoresScriptDebugWhenAllowDevFalse(): void
     {
         define('SCRIPT_DEBUG', true);

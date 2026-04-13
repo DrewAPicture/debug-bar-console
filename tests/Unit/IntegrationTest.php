@@ -11,14 +11,8 @@ use Debug_Bar_Panel;
 use DebugBarConsole;
 use DebugBarConsole\Integration;
 use Mockery;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(Integration::class)]
-#[CoversMethod(Integration::class, 'start')]
-#[CoversMethod(Integration::class, 'registerPanel')]
-#[CoversMethod(Integration::class, 'enqueueScripts')]
 class IntegrationTest extends TestCase
 {
     protected function setUp(): void
