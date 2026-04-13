@@ -1,0 +1,102 @@
+name: Dotorg Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Release tag to publish (e.g. 1.0.0)
+        required: true
+        type: string
+      dry_run:
+        description: Dry run — validate without committing to SVN
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Publish to SVN
+    runs-on: ubuntu-latest
+    environment: wordpress-org
+    env:
+      PLUGIN_SLUG: debug-bar-console
+
+    steps:
+      - name: Checkout release tag
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.release_tag }}
+
+      - name: Deploy stable release
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        with:
+          dry-run: ${{ inputs.dry_run }}
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          VERSION: ${{ inputs.release_tag }}
+
+      - name: Build agent variant archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive_attributes=".git/info/attributes"
+
+          # Add agent-variant overrides for git archive matching.
+          {
+            echo ""
+            echo "# Agent variant overrides"
+            cat .agent/.gitattributes.agent
+          } >> "${archive_attributes}"
+
+          mkdir -p dist
+          git archive \
+            --worktree-attributes \
+            --format=zip \
+            --output="dist/agent.zip" \
+            "${{ inputs.release_tag }}"
+
+      - name: Publish agent variant to SVN
+        shell: bash
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        run: |
+          set -euo pipefail
+          agent_tag="${{ inputs.release_tag }}-agent"
+          svn_url="https://plugins.svn.wordpress.org/${PLUGIN_SLUG}"
+
+          echo "➤ Checking out SVN repository (sparse)..."
+          svn checkout --depth=immediates "${svn_url}" svn-agent
+          svn update --set-depth=immediates svn-agent/tags
+
+          if [[ -d "svn-agent/tags/${agent_tag}" ]]; then
+            echo "ℹ︎ Agent tag ${agent_tag} already exists in SVN — skipping."
+            exit 0
+          fi
+
+          echo "➤ Extracting agent archive..."
+          mkdir -p "svn-agent/tags/${agent_tag}"
+          unzip -q dist/agent.zip -d dist/agent-extracted
+          cp -r dist/agent-extracted/. "svn-agent/tags/${agent_tag}/"
+
+          echo "➤ Staging agent tag..."
+          svn add "svn-agent/tags/${agent_tag}" --force
+
+          svn status svn-agent/tags/${agent_tag}
+
+          if [[ "${{ inputs.dry_run }}" == "true" ]]; then
+            echo "ℹ︎ Dry run: agent variant not committed to SVN."
+          else
+            echo "➤ Committing agent variant..."
+            svn commit "svn-agent/tags/${agent_tag}" \
+              --username="${SVN_USERNAME}" \
+              --password="${SVN_PASSWORD}" \
+              --message="Add agent variant for ${agent_tag}" \
+              --no-auth-cache \
+              --non-interactive
+            echo "✓ Agent variant published to tags/${agent_tag}."
+          fi
