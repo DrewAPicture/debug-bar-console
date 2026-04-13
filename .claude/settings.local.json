@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "WebFetch(domain:docs.github.com)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:runs-on.com)",
+      "WebFetch(domain:medium.com)",
+      "Bash(./vendor/bin/phpunit:*)",
+      "Bash(./vendor/bin/phpstan analyse:*)",
+      "Bash(./vendor/bin/pint:*)"
+    ]
+  }
+}
