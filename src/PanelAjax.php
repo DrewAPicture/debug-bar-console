@@ -104,6 +104,7 @@ class PanelAjax
 
         if (empty($keys)) {
             esc_html_e('Your query produced no output; this does not necessarily mean it failed.');
+
             return;
         }
         ?>
