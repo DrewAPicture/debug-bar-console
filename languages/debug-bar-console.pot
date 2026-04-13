@@ -1,0 +1,83 @@
+# Copyright (C) 2026 Drew Jaynes
+# This file is distributed under the GPLv2.
+msgid ""
+msgstr ""
+"Project-Id-Version: Debug Bar Console 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/debug-bar-console\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-04-13T10:22:08+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0-alpha\n"
+"X-Domain: debug-bar-console\n"
+
+#. Plugin Name of the plugin
+#: debug-bar-console.php
+msgid "Debug Bar Console"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: debug-bar-console.php
+msgid "http://wordpress.org/extend/plugins/debug-bar-console/"
+msgstr ""
+
+#. Description of the plugin
+#: debug-bar-console.php
+msgid "Adds a PHP/SQL console panel to the Debug Bar plugin. Requires the Debug Bar plugin."
+msgstr ""
+
+#. Author of the plugin
+#: debug-bar-console.php
+msgid "Drew Jaynes"
+msgstr ""
+
+#. Author URI of the plugin
+#: debug-bar-console.php
+msgid "https://werdswords.com"
+msgstr ""
+
+#: src/Panel.php:35
+msgid "Console"
+msgstr ""
+
+#: src/Panel.php:58
+msgid "PHP"
+msgstr ""
+
+#: src/Panel.php:59
+msgid "SQL"
+msgstr ""
+
+#: src/Panel.php:95
+msgid "Shift + Enter"
+msgstr ""
+
+#: src/Panel.php:100
+msgctxt "Run the program"
+msgid "Run"
+msgstr ""
+
+#: src/Panel.php:109
+msgid "Enter PHP code to execute."
+msgstr ""
+
+#: src/Panel.php:120
+msgid "Enter SQL to execute."
+msgstr ""
+
+#: src/Panel.php:132
+msgctxt "Formatted output"
+msgid "Formatted"
+msgstr ""
+
+#: src/Panel.php:139
+msgctxt "Raw output"
+msgid "Raw"
+msgstr ""
+
+#: src/Panel.php:147
+msgid "Output"
+msgstr ""
