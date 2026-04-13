@@ -13,6 +13,28 @@
 - Style checks: `./vendor/bin/pint --test`
 - Auto-fix style (when needed): `./vendor/bin/pint`
 
+## Asset Minification
+
+Minified assets are committed to the repository and must be regenerated whenever source assets change.
+
+Run the minifier:
+
+```
+composer minify
+```
+
+Source → output mappings:
+
+| Source | Output |
+|---|---|
+| `src/assets/css/debug-bar-console.css` | `assets/css/debug-bar-console.min.css` |
+| `assets/css/iframe.css` | `assets/css/iframe.min.css` |
+| `src/assets/js/debug-bar-console.js` | `assets/js/debug-bar-console.min.js` |
+
+The CodeMirror files under `src/assets/codemirror/` are third-party and loaded as-is — do not minify them.
+
+The script lives in `bin/minify.php` and uses `matthiasmullie/minify`. The `bin/` directory is excluded from release packages via `.gitattributes`.
+
 ## Standard Change Flow
 
 1. Make focused changes to source/tests/docs.
