@@ -125,6 +125,20 @@ jobs:
             exit 1
           fi
 
+      - name: Generate release notes
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > dist/agent-release-notes.md << 'EOF'
+          Agent variant of the [${{ steps.meta.outputs.source_tag }} stable release](https://github.com/${{ github.repository }}/releases/tag/${{ steps.meta.outputs.source_tag }}).
+
+          This package includes the following agent files not present in the stable release:
+
+          - `AGENTS.md`
+          - `CLAUDE.md`
+          - `.agent/` directory
+          EOF
+
       - name: Create checksums
         shell: bash
         run: |
@@ -143,4 +157,5 @@ jobs:
             dist/${{ steps.meta.outputs.agent_zip }}
             dist/${{ steps.meta.outputs.agent_zip }}.sha256
           fail_on_unmatched_files: true
+          body_path: dist/agent-release-notes.md
           generate_release_notes: false
