@@ -8,7 +8,7 @@
  * Author URI: https://werdswords.com
  * Version: 1.0.0
  * License: GPLv2
- * Requires PHP: 8.0
+ * Requires PHP: 7.4
  * Text Domain: debug-bar-console
  * Domain Path: /languages/
  *
