@@ -9,7 +9,8 @@
       "WebFetch(domain:medium.com)",
       "Bash(./vendor/bin/phpunit:*)",
       "Bash(./vendor/bin/phpstan analyse:*)",
-      "Bash(./vendor/bin/pint:*)"
+      "Bash(./vendor/bin/pint:*)",
+      "Bash(curl -s \"https://wordpress.org/about/stats/\")"
     ]
   }
 }
