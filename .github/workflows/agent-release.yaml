@@ -146,6 +146,7 @@ jobs:
           set -euo pipefail
           release_title="$(gh release view "${{ steps.meta.outputs.source_tag }}" --json name --jq '.name')"
           echo "release_title=${release_title}" >> "${GITHUB_OUTPUT}"
+          echo "agent_title=${release_title}-agent" >> "${GITHUB_OUTPUT}"
 
       - name: Generate release notes
         shell: bash
@@ -172,7 +173,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.meta.outputs.agent_tag }}
-          name: ${{ steps.meta.outputs.agent_tag }}
+          name: ${{ steps.stable.outputs.agent_title }}
           prerelease: true
           target_commitish: ${{ steps.commit.outputs.source_sha }}
           files: |
