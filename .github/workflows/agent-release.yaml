@@ -47,16 +47,23 @@ jobs:
           echo "agent_zip=${agent_zip}" >> "${GITHUB_OUTPUT}"
           echo "stable_zip=${stable_zip}" >> "${GITHUB_OUTPUT}"
 
-          # Resolve tag to a commit SHA for use as target_commitish when
-          # creating the agent release — GitHub's API rejects tag names there.
-          source_sha="$(git rev-list -n 1 "refs/tags/${source_tag}" 2>/dev/null || git rev-list -n 1 "${source_tag}")"
-          echo "source_sha=${source_sha}" >> "${GITHUB_OUTPUT}"
 
       - name: Checkout source tag
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: ${{ steps.meta.outputs.source_tag }}
+
+      - name: Resolve source commit SHA
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          # GitHub's API rejects a tag name as target_commitish when creating
+          # a new release. Resolve to the underlying commit SHA here, after
+          # checkout, when .git is available.
+          source_sha="$(git rev-list -n 1 "refs/tags/${{ steps.meta.outputs.source_tag }}")"
+          echo "source_sha=${source_sha}" >> "${GITHUB_OUTPUT}"
 
       - name: Build stable package check archive
         shell: bash
@@ -157,7 +164,7 @@ jobs:
           tag_name: ${{ steps.meta.outputs.agent_tag }}
           name: ${{ steps.meta.outputs.agent_tag }}
           prerelease: true
-          target_commitish: ${{ steps.meta.outputs.source_sha }}
+          target_commitish: ${{ steps.commit.outputs.source_sha }}
           files: |
             dist/${{ steps.meta.outputs.agent_zip }}
             dist/${{ steps.meta.outputs.agent_zip }}.sha256
