@@ -41,8 +41,11 @@ output = {
 		else
 			data = output.data;
 
+		var htmlRegex = /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]*))$/;
+		var dataHasHtml = htmlRegex.test(data);
+
 		if ( output.mode === 'formatted' ) {
-			if (mode.mode === 'sql') {
+			if (mode.mode === 'sql' || dataHasHtml) {
 				iframe.body.html( data );
 			} else {
 				iframe.body.text( data );
@@ -51,7 +54,7 @@ output = {
 				iframe.body.html( html );
 			}
 		} else {
-			if (mode.mode === 'sql') {
+			if (mode.mode === 'sql' || dataHasHtml) {
 				iframe.body.text( data );
 				html = iframe.body.html();
 				html = html.replace( / /g, '&nbsp;' ).replace(/[\r\n]+/g, '<br />');
