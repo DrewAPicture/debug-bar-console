@@ -104,13 +104,6 @@ jobs:
             exit 1
           fi
 
-      - name: Create checksums
-        shell: bash
-        run: |
-          set -euo pipefail
-          cd dist
-          shasum -a 256 "${{ steps.meta.outputs.stable_zip }}" > "${{ steps.meta.outputs.stable_zip }}.sha256"
-
       - name: Publish stable release
         uses: softprops/action-gh-release@v2
         with:
@@ -119,8 +112,6 @@ jobs:
           prerelease: false
           make_latest: true
           target_commitish: ${{ steps.commit.outputs.source_sha }}
-          files: |
-            dist/${{ steps.meta.outputs.stable_zip }}
-            dist/${{ steps.meta.outputs.stable_zip }}.sha256
+          files: dist/${{ steps.meta.outputs.stable_zip }}
           fail_on_unmatched_files: true
           generate_release_notes: false
