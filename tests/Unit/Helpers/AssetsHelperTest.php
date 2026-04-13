@@ -51,6 +51,7 @@ class AssetsHelperTest extends TestCase
 
     /**
      * @runInSeparateProcess
+     *
      * @preserveGlobalState disabled
      */
     public function testGetAssetUrlConvertsToSrcPathWhenScriptDebugTrue(): void
@@ -68,6 +69,7 @@ class AssetsHelperTest extends TestCase
 
     /**
      * @runInSeparateProcess
+     *
      * @preserveGlobalState disabled
      */
     public function testGetAssetUrlStripsMinSuffixInDevMode(): void
@@ -86,6 +88,7 @@ class AssetsHelperTest extends TestCase
 
     /**
      * @runInSeparateProcess
+     *
      * @preserveGlobalState disabled
      */
     public function testGetAssetUrlIgnoresScriptDebugWhenAllowDevFalse(): void
