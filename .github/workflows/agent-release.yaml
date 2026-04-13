@@ -137,12 +137,22 @@ jobs:
             exit 1
           fi
 
+      - name: Fetch stable release title
+        id: stable
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          release_title="$(gh release view "${{ steps.meta.outputs.source_tag }}" --json name --jq '.name')"
+          echo "release_title=${release_title}" >> "${GITHUB_OUTPUT}"
+
       - name: Generate release notes
         shell: bash
         run: |
           set -euo pipefail
           cat > dist/agent-release-notes.md << 'EOF'
-          Agent variant of the [${{ steps.meta.outputs.source_tag }} stable release](https://github.com/${{ github.repository }}/releases/tag/${{ steps.meta.outputs.source_tag }}).
+          Agent variant of the [${{ steps.stable.outputs.release_title }} stable release](https://github.com/${{ github.repository }}/releases/tag/${{ steps.meta.outputs.source_tag }}).
 
           This package includes the following agent files not present in the stable release:
 
