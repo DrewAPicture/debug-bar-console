@@ -7,11 +7,19 @@ use Brain\Monkey\Functions;
 use Debug_Bar_Console;
 use Debug_Bar_Panel;
 use Mockery;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversFunction;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 require_once dirname(__DIR__, 2).'/compat.php';
 
+#[CoversClass(Debug_Bar_Console::class)]
+#[CoversMethod(Debug_Bar_Console::class, 'ajax')]
+#[CoversMethod(Debug_Bar_Console::class, 'print_mysql_table')]
+#[CoversFunction('debug_bar_console_panel')]
+#[CoversFunction('debug_bar_console_scripts')]
 class CompatTest extends TestCase
 {
     protected function setUp(): void

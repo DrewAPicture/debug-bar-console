@@ -5,8 +5,13 @@ namespace Tests\Unit;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
 use DebugBarConsole\Panel;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(Panel::class)]
+#[CoversMethod(Panel::class, 'init')]
+#[CoversMethod(Panel::class, 'prerender')]
 class PanelTest extends TestCase
 {
     protected function setUp(): void

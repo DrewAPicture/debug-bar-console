@@ -6,10 +6,14 @@ use Brain\Monkey;
 use Brain\Monkey\Functions;
 use DebugBarConsole;
 use DebugBarConsole\Helpers\AssetsHelper;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(AssetsHelper::class)]
+#[CoversMethod(AssetsHelper::class, 'getAssetUrl')]
 class AssetsHelperTest extends TestCase
 {
     protected function setUp(): void

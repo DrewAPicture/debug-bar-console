@@ -7,9 +7,14 @@ use Brain\Monkey\Actions;
 use Brain\Monkey\Functions;
 use DebugBarConsole\PanelAjax;
 use Generator;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(PanelAjax::class)]
+#[CoversMethod(PanelAjax::class, 'init')]
+#[CoversMethod(PanelAjax::class, 'printMySqlTable')]
 class PanelAjaxTest extends TestCase
 {
     protected function setUp(): void
