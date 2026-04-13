@@ -8,6 +8,8 @@ License: GPLv2
 
 Adds a PHP/SQL console panel to the Debug Bar. Requires the [Debug Bar](https://wordpress.org/plugins/debug-bar/) plugin.
 
+Release note: Companion `-agent` prerelease ZIPs are also published and include agent documentation files.
+
 == Description ==
 
 Adds a PHP/SQL console panel to the Debug Bar. Requires the [Debug Bar plugin](http://wordpress.org/extend/plugins/debug-bar/) (v0.5 or later).
@@ -20,6 +22,7 @@ This plugin was adopted in 2024 from the previous author, [@koopersmith](https:/
 * New - Code refactored, modernized, and improved
 * Misc - Updated for compatibility with WordPress 6.7
 * Misc - PHP 7.4 minimum is now required
+* Misc - Release packaging now separates stable and `-agent` artifacts (agent docs included only in `-agent`)
 
 = 0.3 =
 * New - Added syntax highlighting using the CodeMirror text editor.
@@ -39,6 +42,7 @@ This plugin was adopted in 2024 from the previous author, [@koopersmith](https:/
 * New - Code refactored, modernized, and improved
 * Misc - Updated for compatibility with WordPress 6.7
 * Misc - PHP 7.4 minimum is now required
+* Misc - Release packaging now separates stable and `-agent` artifacts (agent docs included only in `-agent`)
 
 = 0.3 =
 * New - Added syntax highlighting using the CodeMirror text editor.

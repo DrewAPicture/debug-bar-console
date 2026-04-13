@@ -1,14 +1,14 @@
-# Agent docs (excluded from stable distribution packages)
-/.agent export-ignore
-/AGENTS.md export-ignore
-/CLAUDE.md export-ignore
+# Agent docs should be included in the agent variant package.
+/.agent -export-ignore
+/AGENTS.md -export-ignore
+/CLAUDE.md -export-ignore
 
-# Development and CI metadata
+# Development and CI metadata remain excluded.
 /.claude export-ignore
 /.github export-ignore
 /tests export-ignore
 
-# Tooling and local development config
+# Tooling and local development config remain excluded.
 /.gitattributes export-ignore
 /.gitignore export-ignore
 /composer.lock export-ignore

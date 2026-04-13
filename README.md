@@ -11,3 +11,8 @@ GPLv2 – http://opensource.org/licenses/gpl-2.0.php GNU Public License
 ## Minimum Requirements
 - PHP 7.4+
 - WordPress 3.1+
+
+## Release Artifacts
+
+- Standard releases are packaged as stable distribution ZIPs without agent documentation files.
+- Companion `-agent` prerelease ZIPs are published with agent docs included (`.agent/`, `AGENTS.md`, `CLAUDE.md`).

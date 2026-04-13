@@ -32,3 +32,26 @@
 - Keep changes scoped to one intent where possible.
 - Include or update tests for behavior changes.
 - If tests are not practical, document why in the PR context.
+
+## Release Packaging Variants
+
+- Stable package defaults are controlled by repository `.gitattributes`.
+- Stable packages must exclude agent docs and development-only files:
+  - `.agent/`, `AGENTS.md`, `CLAUDE.md`
+  - `tests/`, `.github/`, `.claude/`
+  - `phpstan.neon`, `phpunit.xml`, `pint.json`
+- Agent variant packaging uses `.agent/.gitattributes.agent` as a `git archive` override so the package includes:
+  - `.agent/`
+  - `AGENTS.md`
+  - `CLAUDE.md`
+- Agent variant still excludes tests and development metadata.
+
+## Agent Release Workflow
+
+- Workflow file: `.github/workflows/agent-release.yaml`.
+- Primary trigger: `release.published`.
+- Manual trigger: `workflow_dispatch` with `release_tag` input for dry runs or reruns.
+- Output:
+  - prerelease tag `<releaseTag>-agent`
+  - asset `debug-bar-console-<releaseTag>-agent.zip`
+  - checksum `debug-bar-console-<releaseTag>-agent.zip.sha256`
