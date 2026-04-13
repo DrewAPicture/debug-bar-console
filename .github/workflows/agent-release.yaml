@@ -124,6 +124,29 @@ jobs:
             exit 1
           fi
 
+      - name: Append agent note to stable release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          existing_body="$(gh release view "${{ steps.meta.outputs.source_tag }}" --json body --jq '.body // ""')"
+
+          cat > dist/updated-release-notes.md << EOF
+          ${existing_body}
+
+          ---
+
+          \`${{ steps.meta.outputs.agent_zip }}\` includes the following agent files not present in the stable release:
+
+          - \`AGENTS.md\`
+          - \`CLAUDE.md\`
+          - \`.agent/\` directory
+          EOF
+
+          gh release edit "${{ steps.meta.outputs.source_tag }}" \
+            --notes-file dist/updated-release-notes.md
+
       - name: Attach agent zip to stable release
         shell: bash
         env:
