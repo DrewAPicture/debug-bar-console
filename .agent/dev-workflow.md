@@ -49,7 +49,7 @@
 ## Agent Release Workflow
 
 - Workflow file: `.github/workflows/agent-release.yaml`.
-- Primary trigger: `release.published`.
+- Primary trigger: `release.released`.
 - Manual trigger: `workflow_dispatch` with `release_tag` input for dry runs or reruns.
 - Output:
   - prerelease tag `<releaseTag>-agent`
