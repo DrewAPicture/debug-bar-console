@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: Debug Bar Console
  * Plugin URI: http://wordpress.org/extend/plugins/debug-bar-console/
@@ -7,18 +8,21 @@
  * Author URI: https://werdswords.com
  * Version: 1.0.0
  * License: GPLv2
- * Requires PHP: 7.4
+ * Requires PHP: 8.0
  * Text Domain: debug-bar-console
  * Domain Path: /languages/
- */
-
-/**
+ *
  * Copyright (c) 2026, Drew Jaynes
  * Copyright (c) 2011-2024, Daryl Koopersmith
  * http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-use WW\DebugBarConsole\Integration;
+use DebugBarConsole\Integration;
+
+// Bail if accessed directly
+if (! defined('ABSPATH')) {
+    exit;
+}
 
 /**
  * Main plugin class.
@@ -27,22 +31,22 @@ use WW\DebugBarConsole\Integration;
  */
 class DebugBarConsole
 {
-	const VERSION = '1.0.0';
-	const FILE = __FILE__;
+    public const VERSION = '1.0.0';
 
-	/**
-	 * Initializes the plugin.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function init() : void
-	{
-		require_once __DIR__ . '/vendor/autoload.php';
+    public const FILE = __FILE__;
 
-		(new Integration())->start();
-	}
+    /**
+     * Initializes the plugin.
+     *
+     * @since 1.0.0
+     */
+    public function init(): void
+    {
+        require_once __DIR__.'/vendor/autoload.php';
+        require_once __DIR__.'/compat.php';
+
+        (new Integration)->start();
+    }
 }
 
-add_action('init', fn() => (new DebugBarConsole())->init());
+add_action('init', fn () => (new DebugBarConsole)->init());

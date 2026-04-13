@@ -1,0 +1,13 @@
+includes:
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+
+parameters:
+    level: max
+    paths:
+        - src
+        - debug-bar-console.php
+    excludePaths:
+        - compat.php
+    bootstrapFiles:
+        - tests/bootstrap.php
+        - compat.php
