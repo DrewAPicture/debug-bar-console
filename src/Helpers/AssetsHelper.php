@@ -39,6 +39,8 @@ class AssetsHelper
 
     /**
      * (Maybe) converts the asset path to src/.
+     *
+     * @since 1.0.0
      */
     protected static function maybeConvertToSrc(
         string $assetPath,
