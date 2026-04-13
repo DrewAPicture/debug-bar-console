@@ -13,8 +13,6 @@ jobs:
       fail-fast: false
       matrix:
         php-version: ['8.0', '8.1', '8.2', '8.3', '8.4', '8.5']
-        # Use 'prefer-lowest' to ensure compatibility with older PHP versions
-        dependency-version: [prefer-stable, prefer-lowest]
 
     steps:
       - name: Checkout
@@ -29,7 +27,8 @@ jobs:
       - name: Install dependencies
         uses: ramsey/composer-install@v3
         with:
-          dependency-versions: ${{ matrix.dependency-version }}
+          # Use 'lowest' to ensure compatibility with older PHP versions + composer update
+          dependency-versions: "lowest"
 
       - name: Run PHPUnit
         run: ./vendor/bin/phpunit
@@ -51,7 +50,8 @@ jobs:
       - name: Install dependencies
         uses: ramsey/composer-install@v3
         with:
-          dependency-versions: ${{ matrix.dependency-version }}
+          # Use 'lowest' to ensure compatibility with older PHP versions + composer update
+          dependency-versions: "lowest"
 
       - name: Run Pint
         run: ./vendor/bin/pint --test
