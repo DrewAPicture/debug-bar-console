@@ -1,0 +1,161 @@
+name: Agent Release Package
+
+on:
+  release:
+    types: [released]
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing stable release tag to package (e.g. v1.2.3)
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  package-agent-variant:
+    name: Package Agent Variant
+    runs-on: ubuntu-latest
+    env:
+      PLUGIN_SLUG: debug-bar-console
+
+    steps:
+      - name: Resolve source tag
+        id: meta
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            source_tag="${{ github.event.release.tag_name }}"
+          else
+            source_tag="${{ inputs.release_tag }}"
+          fi
+
+          if [[ -z "${source_tag}" ]]; then
+            echo "Unable to determine source tag." >&2
+            exit 1
+          fi
+
+          agent_tag="${source_tag}-agent"
+          agent_zip="${PLUGIN_SLUG}-${source_tag}-agent.zip"
+          stable_zip="${PLUGIN_SLUG}-${source_tag}-stable-check.zip"
+
+          echo "source_tag=${source_tag}" >> "${GITHUB_OUTPUT}"
+          echo "agent_tag=${agent_tag}" >> "${GITHUB_OUTPUT}"
+          echo "agent_zip=${agent_zip}" >> "${GITHUB_OUTPUT}"
+          echo "stable_zip=${stable_zip}" >> "${GITHUB_OUTPUT}"
+
+      - name: Checkout source tag
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ steps.meta.outputs.source_tag }}
+
+      - name: Build stable package check archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          git archive \
+            --worktree-attributes \
+            --format=zip \
+            --output="dist/${{ steps.meta.outputs.stable_zip }}" \
+            "${{ steps.meta.outputs.source_tag }}"
+
+      - name: Validate stable archive exclusions
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive_path="dist/${{ steps.meta.outputs.stable_zip }}"
+          archive_files="$(unzip -Z1 "${archive_path}")"
+
+          # Stable package must never ship agent docs or dev metadata.
+          disallowed_pattern='^\.agent/.+$|^AGENTS\.md$|^CLAUDE\.md$|^tests/|^\.github/|^\.claude/|^phpstan\.neon$|^phpunit\.xml$|^pint\.json$'
+          if echo "${archive_files}" | rg -n "${disallowed_pattern}" >/dev/null; then
+            echo "Stable archive contains disallowed files." >&2
+            echo "${archive_files}" | rg -n "${disallowed_pattern}" >&2 || true
+            exit 1
+          fi
+
+      - name: Build agent variant archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive_attributes=".git/info/attributes"
+
+          # Add agent-variant overrides for git archive matching.
+          {
+            echo ""
+            echo "# Agent variant overrides"
+            cat .agent/.gitattributes.agent
+          } >> "${archive_attributes}"
+
+          git archive \
+            --worktree-attributes \
+            --format=zip \
+            --output="dist/${{ steps.meta.outputs.agent_zip }}" \
+            "${{ steps.meta.outputs.source_tag }}"
+
+      - name: Validate agent archive content
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive_path="dist/${{ steps.meta.outputs.agent_zip }}"
+          archive_files="$(unzip -Z1 "${archive_path}")"
+
+          required_paths=(
+            ".agent/README.md"
+            "AGENTS.md"
+            "CLAUDE.md"
+          )
+
+          for required_path in "${required_paths[@]}"; do
+            if ! echo "${archive_files}" | rg -n "^${required_path}$" >/dev/null; then
+              echo "Agent archive missing required file: ${required_path}" >&2
+              exit 1
+            fi
+          done
+
+          disallowed_pattern='^tests/|^\.github/|^\.claude/|^phpstan\.neon$|^phpunit\.xml$|^pint\.json$'
+          if echo "${archive_files}" | rg -n "${disallowed_pattern}" >/dev/null; then
+            echo "Agent archive contains disallowed files." >&2
+            echo "${archive_files}" | rg -n "${disallowed_pattern}" >&2 || true
+            exit 1
+          fi
+
+      - name: Generate release notes
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > dist/agent-release-notes.md << 'EOF'
+          Agent variant of the [${{ steps.meta.outputs.source_tag }} stable release](https://github.com/${{ github.repository }}/releases/tag/${{ steps.meta.outputs.source_tag }}).
+
+          This package includes the following agent files not present in the stable release:
+
+          - `AGENTS.md`
+          - `CLAUDE.md`
+          - `.agent/` directory
+          EOF
+
+      - name: Create checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd dist
+          shasum -a 256 "${{ steps.meta.outputs.agent_zip }}" > "${{ steps.meta.outputs.agent_zip }}.sha256"
+
+      - name: Publish agent prerelease
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.meta.outputs.agent_tag }}
+          name: ${{ steps.meta.outputs.agent_tag }}
+          prerelease: true
+          target_commitish: ${{ steps.meta.outputs.source_tag }}
+          files: |
+            dist/${{ steps.meta.outputs.agent_zip }}
+            dist/${{ steps.meta.outputs.agent_zip }}.sha256
+          fail_on_unmatched_files: true
+          body_path: dist/agent-release-notes.md
+          generate_release_notes: false
