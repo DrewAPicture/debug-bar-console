@@ -13,9 +13,17 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - php-version: ['8.0', '8.1']
+          - php-version: '8.0'
             composer-options: '--no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs'
-          - php-version: ['8.2', '8.3', '8.4', '8.5']
+          - php-version: '8.1'
+            composer-options: '--no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs'
+          - php-version: '8.2'
+            composer-options: '--no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --optimize-autoloader'
+          - php-version: '8.3'
+            composer-options: '--no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --optimize-autoloader'
+          - php-version: '8.4'
+            composer-options: '--no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --optimize-autoloader'
+          - php-version: '8.6'
             composer-options: '--no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --optimize-autoloader'
 
     steps:
