@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       release_tag:
-        description: Existing stable release tag to package (e.g. v1.2.3)
+        description: Existing stable release tag to attach the agent zip to (e.g. v1.2.3)
         required: true
         type: string
 
@@ -38,32 +38,18 @@ jobs:
             exit 1
           fi
 
-          agent_tag="${source_tag}-agent"
           agent_zip="${PLUGIN_SLUG}-${source_tag}-agent.zip"
           stable_zip="${PLUGIN_SLUG}-${source_tag}-stable-check.zip"
 
           echo "source_tag=${source_tag}" >> "${GITHUB_OUTPUT}"
-          echo "agent_tag=${agent_tag}" >> "${GITHUB_OUTPUT}"
           echo "agent_zip=${agent_zip}" >> "${GITHUB_OUTPUT}"
           echo "stable_zip=${stable_zip}" >> "${GITHUB_OUTPUT}"
-
 
       - name: Checkout source tag
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: ${{ steps.meta.outputs.source_tag }}
-
-      - name: Resolve source commit SHA
-        id: commit
-        shell: bash
-        run: |
-          set -euo pipefail
-          # GitHub's API rejects a tag name as target_commitish when creating
-          # a new release. Resolve to the underlying commit SHA here, after
-          # checkout, when .git is available.
-          source_sha="$(git rev-list -n 1 "refs/tags/${{ steps.meta.outputs.source_tag }}")"
-          echo "source_sha=${source_sha}" >> "${GITHUB_OUTPUT}"
 
       - name: Build stable package check archive
         shell: bash
@@ -107,6 +93,7 @@ jobs:
           git archive \
             --worktree-attributes \
             --format=zip \
+            --prefix=debug-bar-console/ \
             --output="dist/${{ steps.meta.outputs.agent_zip }}" \
             "${{ steps.meta.outputs.source_tag }}"
 
@@ -118,9 +105,9 @@ jobs:
           archive_files="$(unzip -Z1 "${archive_path}")"
 
           required_paths=(
-            ".agent/README.md"
-            "AGENTS.md"
-            "CLAUDE.md"
+            "debug-bar-console/.agent/README.md"
+            "debug-bar-console/AGENTS.md"
+            "debug-bar-console/CLAUDE.md"
           )
 
           for required_path in "${required_paths[@]}"; do
@@ -130,55 +117,19 @@ jobs:
             fi
           done
 
-          disallowed_pattern='^tests/|^\.github/|^\.claude/|^phpstan\.neon$|^phpunit\.xml$|^pint\.json$'
+          disallowed_pattern='^debug-bar-console/tests/|^debug-bar-console/\.github/|^debug-bar-console/\.claude/|^debug-bar-console/phpstan\.neon$|^debug-bar-console/phpunit\.xml$|^debug-bar-console/pint\.json$'
           if echo "${archive_files}" | grep -E "${disallowed_pattern}" >/dev/null; then
             echo "Agent archive contains disallowed files." >&2
             echo "${archive_files}" | grep -E "${disallowed_pattern}" >&2 || true
             exit 1
           fi
 
-      - name: Fetch stable release title
-        id: stable
+      - name: Attach agent zip to stable release
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          release_title="$(gh release view "${{ steps.meta.outputs.source_tag }}" --json name --jq '.name')"
-          echo "release_title=${release_title}" >> "${GITHUB_OUTPUT}"
-          echo "agent_title=${release_title}-agent" >> "${GITHUB_OUTPUT}"
-
-      - name: Generate release notes
-        shell: bash
-        run: |
-          set -euo pipefail
-          cat > dist/agent-release-notes.md << 'EOF'
-          Agent variant of the [${{ steps.stable.outputs.release_title }} stable release](https://github.com/${{ github.repository }}/releases/tag/${{ steps.meta.outputs.source_tag }}).
-
-          This package includes the following agent files not present in the stable release:
-
-          - `AGENTS.md`
-          - `CLAUDE.md`
-          - `.agent/` directory
-          EOF
-
-      - name: Create checksums
-        shell: bash
-        run: |
-          set -euo pipefail
-          cd dist
-          shasum -a 256 "${{ steps.meta.outputs.agent_zip }}" > "${{ steps.meta.outputs.agent_zip }}.sha256"
-
-      - name: Publish agent prerelease
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.meta.outputs.agent_tag }}
-          name: ${{ steps.stable.outputs.agent_title }}
-          prerelease: true
-          target_commitish: ${{ steps.commit.outputs.source_sha }}
-          files: |
-            dist/${{ steps.meta.outputs.agent_zip }}
-            dist/${{ steps.meta.outputs.agent_zip }}.sha256
-          fail_on_unmatched_files: true
-          body_path: dist/agent-release-notes.md
-          generate_release_notes: false
+          gh release upload "${{ steps.meta.outputs.source_tag }}" \
+            "dist/${{ steps.meta.outputs.agent_zip }}" \
+            --clobber
