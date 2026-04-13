@@ -1,23 +1,25 @@
 # Debug Bar Console — Agent Notes
 
-## Unit Testing
+This file is the lean gateway for agent work. Detailed guidance lives in `.agent/`.
 
-- **Namespaces** — test class namespaces should mirror the source namespace they cover, with a primary namespace of `Tests\Unit` (e.g. `Tests\Unit\Helpers` for tests covering `DebugBarConsole\Helpers`)
-- **Test method names** — use dromedary case: `testMethodNameDoesThing()`
-- **Data providers** — must return a `Generator` instance, with each test case yielded as an array
-- **Data provider naming** — mirror the corresponding test method name, replacing the `test` prefix with `provider` (e.g. `testFoo()` → `providerFoo()`)
-- **Avoid `shouldReceive()`** — prefer explicit mock setup; `shouldReceive()` fails silently and can mask real errors
-- **Concrete test doubles** — when a test needs a concrete test class, define it at the bottom of the same test file rather than in a separate file
-- **Imports** — avoid fully-qualified class names inline; import all classes via `use` statements at the top of the file
+## Table Of Contents
 
-## Code Quality
+- [Agent docs index](.agent/README.md)
+- [Project overview](.agent/project-overview.md)
+- [Architecture](.agent/architecture.md)
+- [Development workflow](.agent/dev-workflow.md)
+- [Testing and quality](.agent/testing-and-quality.md)
+- [PHP standards](.agent/php-standards.md)
+- [Decision log](.agent/decision-log.md)
 
-All three tools must pass before code is considered complete:
+## Stop Conditions
 
-- **PHPUnit** — all tests must pass (`./vendor/bin/phpunit`)
-- **PHPStan** — no errors at level max (`./vendor/bin/phpstan analyse`)
-- **Pint** — no style violations (`./vendor/bin/pint --test`)
+Work is not complete until all of the following are true:
 
-## PHP Coding Standards
-
-Although this is a WordPress plugin, it does not follow the WordPress coding standards for PHP. Do not apply or enforce WPCS rules when writing or reviewing PHP code.
+1. Required quality checks pass:
+   - `./vendor/bin/phpunit`
+   - `./vendor/bin/phpstan analyse`
+   - `./vendor/bin/pint --test`
+2. Any newly introduced docs links are valid and non-broken.
+3. Behavior-changing code includes updated tests, or a clear rationale is documented when tests are not feasible.
+4. Agent docs do not contradict source-of-truth config in `composer.json`, `phpunit.xml`, and `phpstan.neon`.
