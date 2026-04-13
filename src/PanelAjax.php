@@ -101,10 +101,11 @@ class PanelAjax
         $keys = array_keys($data[0] ?? []);
 
         if (empty($keys)) {
+            esc_html_e('Your query produced no output; this does not necessarily mean it failed.');
             return;
         }
         ?>
-        <table class="mysql" cellpadding="0">
+        <table class="mysql">
             <thead>
             <tr class="query">
                 <td colspan="<?php echo esc_attr((string) count($keys)); ?>"><?php echo esc_sql($query); ?></td>

@@ -31,4 +31,10 @@ class Debug_Bar_Panel
     public function title($title = null) {}
 
     public function set_visible($visible) {}
+
+    public function init(): void {}
+
+    public function prerender(): void {}
+
+    public function render(): void {}
 }

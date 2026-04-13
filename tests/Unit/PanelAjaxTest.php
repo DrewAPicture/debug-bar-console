@@ -43,6 +43,7 @@ class PanelAjaxTest extends TestCase
     {
         Functions\expect('esc_attr')->never();
         Functions\expect('esc_html')->never();
+        Functions\stubs(['esc_html_e']);
 
         ob_start();
         (new PanelAjax)->printMySqlTable($data);
