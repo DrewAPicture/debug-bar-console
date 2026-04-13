@@ -1,4 +1,4 @@
-name: Dotorg Release
+name: Dotorg Release Packages
 
 on:
   workflow_dispatch:
