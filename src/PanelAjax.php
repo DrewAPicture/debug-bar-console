@@ -93,6 +93,8 @@ class PanelAjax
     /**
      * Prints the MySQL table.
      *
+     * @since 1.0.0
+     *
      * @param  list<array<array-key, mixed>>  $data  Found rows.
      * @param  string  $query  Optional. Query text. Default empty string.
      */

@@ -41,6 +41,8 @@ class Integration
     /**
      * Registers the panel.
      *
+     * @since 1.0.0
+     *
      * @param  array<int, \Debug_Bar_Panel>  $panels
      * @return array<int, \Debug_Bar_Panel>
      */

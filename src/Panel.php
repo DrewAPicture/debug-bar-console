@@ -28,6 +28,8 @@ class Panel extends Debug_Bar_Panel
 {
     /**
      * {@inheritDoc}
+     *
+     * @since 1.0.0
      */
     #[Override]
     public function init(): void
@@ -39,6 +41,8 @@ class Panel extends Debug_Bar_Panel
 
     /**
      * {@inheritDoc}
+     *
+     * @since 1.0.0
      */
     #[Override]
     public function prerender(): void
@@ -48,6 +52,8 @@ class Panel extends Debug_Bar_Panel
 
     /**
      * {@inheritDoc}
+     *
+     * @since 1.0.0
      */
     #[Override]
     public function render(): void
