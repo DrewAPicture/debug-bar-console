@@ -17,6 +17,8 @@ Adds a PHP/SQL console panel to the Debug Bar. Requires the [Debug Bar plugin](h
 
 This plugin was adopted in 2024 from the previous author, [@koopersmith](https://profiles.wordpress.org/koopersmith/).
 
+Want to contribute? This plugin is in active development [on GitHub](https://github.com/DrewAPicture/debug-bar-console).
+
 == Upgrade Notice ==
 
 = 1.0.0 =
