@@ -4,6 +4,7 @@ Tags: debug, developer, console
 Tested up to: 7.0
 Stable tag: 1.0.0
 Requires at least: 3.1
+Requires Plugins: debug-bar
 License: GPLv2
 
 Adds a PHP/SQL console panel to the Debug Bar. Requires the [Debug Bar](https://wordpress.org/plugins/debug-bar/) plugin.
