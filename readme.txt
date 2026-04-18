@@ -1,7 +1,7 @@
 === Debug Bar Console ===
 Contributors: drewapicture, koopersmith
 Tags: debug, developer, console
-Tested up to: 6.7
+Tested up to: 7.0
 Stable tag: 1.0.0
 Requires at least: 3.1
 License: GPLv2
@@ -19,10 +19,11 @@ This plugin was adopted in 2024 from the previous author, [@koopersmith](https:/
 == Upgrade Notice ==
 
 = 1.0.0 =
-* New - Code refactored, modernized, and improved
-* Misc - Updated for compatibility with WordPress 6.7
-* Misc - PHP 7.4 minimum is now required
-* Misc - Release packaging now separates stable and `-agent` artifacts (agent docs included only in `-agent`)
+* New – Modernized codebase with autoloading and clearer architecture
+* Fixed – Output display logic: when PHP execution outputs HTML, the Formatted tab now renders it and the Raw tab shows unrendered markup (previously these were inverted).
+* Misc - Minimum PHP requirement raised to 7.4.
+* Misc - Updated for WordPress 7.0 compatibility
+* Misc - GitHub releases now contain an agent-friendly version
 
 = 0.3 =
 * New - Added syntax highlighting using the CodeMirror text editor.
@@ -39,10 +40,18 @@ This plugin was adopted in 2024 from the previous author, [@koopersmith](https:/
 == Changelog ==
 
 = 1.0.0 =
-* New - Code refactored, modernized, and improved
-* Misc - Updated for compatibility with WordPress 6.7
-* Misc - PHP 7.4 minimum is now required
-* Misc - Release packaging now separates stable and `-agent` artifacts (agent docs included only in `-agent`)
+* New – Code modernization: full rewrite with Composer autoloading, namespaced classes, and full test coverage.
+* Fixed – Output display logic: when PHP execution outputs HTML, the Formatted tab now renders it and the Raw tab shows unrendered markup (previously these were inverted).
+* Misc – Improved escaping in SQL results table: column keys and values are now more thoroughly escaped; non-scalar cell values render as empty strings.
+* Misc – Minimum PHP requirement raised to 7.4.
+* Misc - Updated for WordPress 7.0 compatibility
+* Misc - GitHub releases now contain an agent-friendly version
+
+**Deprecated (scheduled for removal in 2.0.0)**
+
+* The global `Debug_Bar_Console` class is deprecated in favor of the new namespaced equivalent.
+* The `debug_bar_console_panel()` and `debug_bar_console_scripts()` functions are deprecated.
+* `class-debug-bar-console.php` remains as a compatibility shim but will be removed in the next major release.
 
 = 0.3 =
 * New - Added syntax highlighting using the CodeMirror text editor.
