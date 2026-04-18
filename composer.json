@@ -38,6 +38,11 @@
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "audit": {
+          "ignore": [
+            "PKSA-5jz8-6tcw-pbk4"
+          ]
         }
     }
 }
