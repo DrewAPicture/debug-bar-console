@@ -31,13 +31,6 @@ This plugin was adopted in 2024 from the previous author, [@koopersmith](https:/
 * Misc - Explicit PHP/SQL modes.
 * Misc - UI changes to reflect updated debug bar UI.
 
-= 0.2 =
-* Misc - Improvements to MySQL detection and display.
-* Misc – Bug fixes.
-
-= 0.1 =
-* Initial Release
-
 == Changelog ==
 
 = 1.0.0 =
